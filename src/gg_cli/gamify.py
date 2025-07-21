@@ -175,25 +175,4 @@ def process_gamify_logic(git_command_args: list[str]) -> None:
                 border_style="green", expand=False
             ))
 
-            # Give a level up XP bonus
-            _, xp_per_level, _ = get_level_info(new_level)
-            xp_from_bonus = int(xp_per_level * 0.20)
-            user_data["user"]["xp"] += xp_from_bonus
-
-            # Recalculate stats for the bonus message
-            bonus_final_xp = user_data["user"]["xp"]
-            bonus_final_level = get_level_from_xp(bonus_final_xp)
-            _, bonus_xp_per_level, _ = get_level_info(bonus_final_level)
-            bonus_xp_base = get_total_xp_for_level(bonus_final_level)
-            bonus_next_level_target = bonus_xp_base + bonus_xp_per_level
-
-            console.print(translator.t(
-                "xp_gain_message",
-                xp=xp_from_bonus,
-                level=bonus_final_level,
-                current_xp=bonus_final_xp,
-                next_level_xp=bonus_next_level_target
-            ))
-            user_data["user"]["level"] = bonus_final_level
-
     save_user_data(user_data)

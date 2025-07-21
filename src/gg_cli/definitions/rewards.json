@@ -3,22 +3,82 @@
     "en": [
       "Talk is cheap. Show me the code. - Linus Torvalds",
       "Any fool can write code that a computer can understand. Good programmers write code that humans can understand. - Martin Fowler",
-      "First, solve the problem. Then, write the code. - John Johnson"
+      "First, solve the problem. Then, write the code. - John Johnson",
+      "Premature optimization is the root of all evil. - Donald Knuth",
+      "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it. - Brian Kernighan",
+      "Program testing can be used to show the presence of bugs, but never to show their absence! - Edsger W. Dijkstra",
+      "There are only two hard things in Computer Science: cache invalidation and naming things. - Phil Karlton",
+      "Adding manpower to a late software project makes it later. - Fred Brooks (Brooks's Law)",
+      "The best code is no code at all. - Jeff Atwood",
+      "Measuring programming progress by lines of code is like measuring aircraft building progress by weight. - Bill Gates",
+      "Always code as if the guy who ends up maintaining your code will be a violent psychopath who knows where you live. - John Woods",
+      "The first 90 percent of the code accounts for the first 90 percent of the development time. The remaining 10 percent of the code accounts for the other 90 percent of the development time. - Tom Cargill",
+      "Perfection is achieved not when there is nothing more to add, but when there is nothing left to take away. - Antoine de Saint-Exupéry",
+      "Given enough eyeballs, all bugs are shallow. - Linus Torvalds (Linus's Law)",
+      "Simplicity is the ultimate sophistication. - Leonardo da Vinci",
+      "It's not a bug – it's an undocumented feature. - Anonymous",
+      "The most important property of a program is whether it accomplishes the intention of its user. - C.A.R. Hoare",
+      "Code is like humor. When you have to explain it, it’s bad. - Cory House"
     ],
     "zh": [
       "废话少说，放码过来。——林纳斯·托瓦兹",
       "任何傻瓜都能写出计算机能理解的代码。好的程序员能写出人类能理解的代码。——马丁·福勒",
-      "先解决问题，再写代码。——约翰·约翰逊"
+      "先解决问题，再写代码。——约翰·约翰逊",
+      "过早的优化是万恶之源。——唐纳德·克努斯",
+      "调试的难度是编写代码的两倍。因此，如果你用尽浑身解数写出了最聪明的代码，那么根据定义，你将没有足够的智慧去调试它。——布莱恩·柯林汉",
+      "程序测试可以证明程序有错误，但永远不能证明程序没有错误！——艾兹赫尔·戴克斯特拉",
+      "计算机科学中只有两件难事：缓存失效和给变量命名。——菲尔·卡尔顿",
+      "给一个延期的软件项目增加人力，只会让它更延期。——弗雷德·布鲁克斯（布鲁克斯法则）",
+      "最好的代码就是一行代码都没有。——杰夫·阿特伍德",
+      "用代码行数来衡量编程进度，就像用重量来衡量造飞机的进度一样。——比尔·盖茨",
+      "写代码时要时刻记住，将来维护你代码的人可能是一个知道你住在哪里的暴力型精神病患者。——约翰·伍兹",
+      "项目最初90%的代码，占用了90%的开发时间。剩下10%的代码，又占用了另外90%的开发时间。——汤姆·卡吉尔",
+      "完美的境界，不是指无可复加，而是指无可删减。——安托万·德·圣-埃克苏佩里",
+      "只要有足够多的眼睛，就可让所有问题浮现。——林纳斯·托瓦兹（林纳斯定律）",
+      "简约是最终的复杂。——列奥纳多·达·芬奇",
+      "那不是一个bug，那是一个未被文档化的特性。——佚名",
+      "一个程序最重要的特性，是它是否能满足用户的意图。——查尔斯·安东尼·理查德·霍尔",
+      "代码就像一个笑话，当你需要去解释它的时候，就说明它很糟糕。——科里·豪斯"
     ]
   },
   "jokes": {
     "en": [
       "Why do programmers prefer dark mode? Because light attracts bugs.",
-      "A programmer puts two glasses on his bedside table. One full of water, and one empty. The full one is in case he gets thirsty, and the empty one is in case he doesn't."
+      "A programmer puts two glasses on his bedside table. One full of water, and one empty. The full one is in case he gets thirsty, and the empty one is in case he doesn't.",
+      "There are 10 types of people in the world: those who understand binary, and those who don't.",
+      "A SQL query goes into a bar, walks up to two tables and asks, 'Can I join you?'",
+      "Why do Java developers wear glasses? Because they don't C# (see sharp).",
+      "An optimist says 'the glass is half full.' A pessimist says 'the glass is half empty.' A programmer says 'the glass is twice as large as it needs to be.'",
+      "To understand what recursion is, you must first understand recursion.",
+      "A programmer's wife tells him: 'Go to the store and buy a loaf of bread. If they have eggs, buy a dozen.' The programmer comes back with 12 loaves of bread.",
+      "What's the object-oriented way to get wealthy? Inheritance.",
+      "I've got a great UDP joke to tell you, but I don't know if you'll get it.",
+      "Knock, knock.\\n'Who's there?'\\n(very long pause)\\n'Java.'",
+      "How do you comfort a JavaScript bug? You console it.",
+      "A programmer is a machine that turns coffee into code.",
+      "Why was the developer unhappy at their job? They didn't get arrays.",
+      "What's the difference between a programmer and a software tester? The programmer knows that 2+2=4. The tester has to check for 2+2=3.999999, 2+2=4.000001, 2+2='four', 2+2=null...",
+      "!false (It's funny because it's true.)",
+      "I would love to change the world, but they won’t give me the source code."
     ],
     "zh": [
       "程序员为什么喜欢暗色模式？因为光（light）会吸引bug（虫子）。",
-      "一个程序员在床头放了两个杯子。一个装满了水，一个空的。满的是为了口渴时喝，空的是为了不渴时用。"
+      "一个程序员在床头放了两个杯子。一个装满了水，一个空的。满的是为了口渴时喝，空的是为了不渴时用。",
+      "世界上有10种人：懂二进制的和不懂二进制的。",
+      "一个SQL查询走进一家酒吧，径直走向两张桌子（tables），然后问道：‘我能加入（join）你们吗？’",
+      "为什么Java程序员都戴眼镜？因为他们看不清（C#）。",
+      "乐观主义者说：‘杯子是半满的。’悲观主义者说：‘杯子是半空的。’而程序员会说：‘这个杯子的尺寸是需求的两倍大。’",
+      "想要理解什么是递归，你首先得理解递归。",
+      "程序员的妻子对他说：‘去商店买一条面包。如果他们有鸡蛋，就买一打。’ 结果程序员带着12条面包回来了。",
+      "面向对象的致富之道是什么？继承 (Inheritance)。",
+      "我有个超棒的 UDP 笑话要讲给你听，但我不知道你能不能收到。",
+      "咚咚咚。\\n‘谁呀？’\\n（过了一段很长的沉默）\\n‘Java。’",
+      "如何安慰一个JavaScript的 bug？安慰（console）它一下。",
+      "程序员是一种能把咖啡转换成代码的机器。",
+      "那个程序员为什么工作得不开心？因为他没能加薪（a raise，与数组 arrays 谐音）。",
+      "程序员和软件测试员有什么区别？程序员知道 2+2=4。而测试员必须检查 2+2=3.999999, 2+2=4.000001, 2+2='four', 2+2=null 等等情况……",
+      "!false (它之所以好笑，是因为它为真(true)。)",
+      "我很想改变世界，但他们就是不给我源代码。"
     ]
   }
 }
