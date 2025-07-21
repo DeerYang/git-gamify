@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "git-gamify"
+version = "1.0.0"
+authors = [
+    { name = "Your Name", email = "your.email@example.com" },
+]
+description = "A CLI tool that adds a fun gamification layer to your daily Git usage."
+readme = "README.md"
+requires-python = ">=3.8"
+# 使用新的、推荐的 license 格式，修复了警告
+license = { text = "MIT License" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "rich>=13.0.0",
+    "typer[all]>=0.9.0",
+]
+
+[project.scripts]
+gg = "gg_cli.main:cli_entry"
+
+# ----------------- 新增和修改的部分在这里 -----------------
+[tool.setuptools]
+# 告诉 setuptools 我们的代码包在 src 文件夹里
+package-dir = {"" = "src"}
+
+[tool.setuptools.package-data]
+# 告诉 setuptools，要将所有文件夹下的所有 .json 文件都包含进来
+"*" = ["**/*.json"]

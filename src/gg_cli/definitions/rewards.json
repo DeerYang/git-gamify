@@ -1,0 +1,24 @@
+{
+  "quotes": {
+    "en": [
+      "Talk is cheap. Show me the code. - Linus Torvalds",
+      "Any fool can write code that a computer can understand. Good programmers write code that humans can understand. - Martin Fowler",
+      "First, solve the problem. Then, write the code. - John Johnson"
+    ],
+    "zh": [
+      "废话少说，放码过来。——林纳斯·托瓦兹",
+      "任何傻瓜都能写出计算机能理解的代码。好的程序员能写出人类能理解的代码。——马丁·福勒",
+      "先解决问题，再写代码。——约翰·约翰逊"
+    ]
+  },
+  "jokes": {
+    "en": [
+      "Why do programmers prefer dark mode? Because light attracts bugs.",
+      "A programmer puts two glasses on his bedside table. One full of water, and one empty. The full one is in case he gets thirsty, and the empty one is in case he doesn't."
+    ],
+    "zh": [
+      "程序员为什么喜欢暗色模式？因为光（light）会吸引bug（虫子）。",
+      "一个程序员在床头放了两个杯子。一个装满了水，一个空的。满的是为了口渴时喝，空的是为了不渴时用。"
+    ]
+  }
+}

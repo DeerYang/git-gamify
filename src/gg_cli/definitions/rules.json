@@ -1,0 +1,7 @@
+{
+  "internal_commands": [
+    "profile",
+    "config",
+    "help"
+  ]
+}
