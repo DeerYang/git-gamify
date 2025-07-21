@@ -133,13 +133,3 @@ gg help
 ## 📄 许可协议
 
 本项目基于 MIT 许可协议。
-```
-
----
-
-**最后一步：更新你的截图和 PyPI 徽章**
-
-1.  **截图**：像上次一样，截一张漂亮的 `gg profile` 中文或英文界面的图，上传到 GitHub Issue，然后用真实的链接替换掉两个 README 文件中的占位符。
-2.  **PyPI 徽章**：在两个文件的顶部，我都使用了一个 PyPI 徽章：`![PyPI Version](https://img.shields.io/pypi/v/git-gamify.svg?color=blue)`。请确保 `git-gamify` 是你在 PyPI 上的**真实包名**。如果不是，请修改它。这个徽章会自动显示你包的最新版本号，非常专业！
-
-完成这些，你的项目就拥有了一份堪称完美的“产品说明书”了。
