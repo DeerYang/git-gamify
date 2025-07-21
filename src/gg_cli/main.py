@@ -17,20 +17,11 @@ from gg_cli.gamify import process_gamify_logic, get_level_info, get_total_xp_for
 from gg_cli.translator import Translator
 from gg_cli.utils import console, DATA_DIR, DEFINITIONS_DIR
 
-
-# --- 1. 加载规则手册 ---
-def load_rules():
-    with open(DEFINITIONS_DIR / 'rules.json', 'r', encoding='utf-8') as f:
-        return json.load(f)
-
-RULES = load_rules()
-INTERNAL_COMMANDS = RULES["internal_commands"]
-
-# --- 2. Typer App 和所有命令定义 ---
+# --- 1. Typer App 定义 ---
 app = typer.Typer(
-    add_completion=False,
     help="Run `gg help` for a list of gamify commands.",
-    add_help_option=False
+    add_help_option=False,  # 我们自己实现 help
+    no_args_is_help=True,   # 没有参数时，自动显示帮助信息
 )
 
 def get_translator():
@@ -38,8 +29,23 @@ def get_translator():
     lang_code = user_data.get("config", {}).get("language", "en")
     return Translator(lang_code)
 
+# --- 2. Typer 命令函数 ---
+
+@app.callback()
+def main_callback(ctx: typer.Context):
+    """
+    这是一个在任何命令运行之前都会被调用的回调函数。
+    我们在这里进行前置检查。
+    """
+    # 如果用户运行的不是 help 命令，并且当前不在一个 git 仓库里
+    if ctx.invoked_subcommand != 'help' and not is_in_git_repo():
+        console.print(f"[bold red]Error:[/bold red] The `gg {ctx.invoked_subcommand}` command must be run inside a Git repository.")
+        raise typer.Exit(code=1)
+
 @app.command("help")
 def show_help():
+    """Show the Git-Gamify command help."""
+    # ... (这个函数内容完全不变) ...
     table = Table(box=None, show_header=False, show_edge=False)
     table.add_column(style="cyan", justify="left", width=12)
     table.add_column()
@@ -61,6 +67,8 @@ def manage_profile(
         stats: bool = typer.Option(False, "--stats", "-s", help="Display detailed statistics."),
         reset: bool = typer.Option(False, "--reset", help="Reset all progress for the current user.")
 ):
+    """Display user profile, stats, or reset progress."""
+    # ... (这个函数内容完全不变) ...
     if reset:
         email = get_current_git_email()
         if not email:
@@ -129,6 +137,8 @@ def manage_config(
         set_value: str = typer.Option(None, "--set", help="Set a value (e.g., --set language=zh)."),
         get_value: str = typer.Option(None, "--get", help="Get a value (e.g., --get language).")
 ):
+    """Get or set configuration values."""
+    # ... (这个函数内容完全不变) ...
     if not set_value and not get_value:
         console.print("[yellow]Please provide an option. Use --set or --get. Run 'gg help' for more info.[/yellow]")
         return
@@ -151,8 +161,10 @@ def manage_config(
         else:
             console.print(f"[red]Error: Unknown config key '[cyan]{get_value}[/cyan]'. Only 'language' is supported.[/red]")
 
-# --- 3. Git Wrapper Function ---
+# --- 3. Git Wrapper & Main Entry Point ---
+
 def run_git_wrapper(git_args):
+    """Executes the real git command and handles gamification."""
     try:
         result = subprocess.run(['git'] + git_args, capture_output=True, text=True, check=False, encoding='utf-8')
         if result.stdout: sys.stdout.write(result.stdout)
@@ -164,33 +176,18 @@ def run_git_wrapper(git_args):
                 process_gamify_logic(git_args)
     except FileNotFoundError:
         console.print("[bold red]Error: 'git' command not found. Is Git installed in your PATH?[/bold red]")
-    except Exception:  # <-- 直接捕获 Exception，不取别名
+    except Exception:
         console.print("[bold red]An unexpected error occurred. Full traceback below:[/bold red]")
-        # 打印完整的错误堆栈信息，这和在PyCharm里看到的几乎一样
         traceback.print_exc()
 
-
-# --- 4. The Final, Magic-Token-Driven Entry Point ---
 def cli_entry():
-    args = sys.argv[1:]
-    if not args:
-        console.print("Welcome to Git-Gamify! Your aliased `git` commands are being gamified.")
-        console.print("Run `gg help` for a list of internal commands.")
-        return
-    if args[0] == 'git':
-        git_real_args = args[1:]
-        run_git_wrapper(git_real_args)
+    """The main entry point for the CLI tool."""
+    # 检查是否是特殊的 'git' 包装命令
+    if len(sys.argv) > 1 and sys.argv[1] == 'git':
+        run_git_wrapper(sys.argv[2:])
     else:
-        command = args[0]
-        if command in INTERNAL_COMMANDS:
-            if command != 'help' and not is_in_git_repo():
-                console.print(f"[bold red]Error:[/bold red] The `gg {command}` command must be run inside a Git repository.")
-                sys.exit(1)
-            app()
-        else:
-            console.print(f"[bold red]Error:[/bold red] Unknown gg command '[cyan]{command}[/cyan]'.")
-            console.print("Run `gg help` for a list of available commands.")
-            sys.exit(1)
+        # 否则，将所有事情都交给 Typer 处理
+        app()
 
 if __name__ == "__main__":
     cli_entry()
