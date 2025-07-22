@@ -38,15 +38,23 @@ def get_translator() -> Translator:
 @app.callback()
 def main_callback(ctx: typer.Context):
     """
-    A callback that runs before any command.
-
-    Used here to perform prerequisite checks, like ensuring the command
-    (if it's not 'help') is run inside a Git repository.
+    A callback that runs before any command to perform prerequisite checks.
     """
-    # Allow 'help' command to run anywhere.
-    if ctx.invoked_subcommand != 'help' and not is_in_git_repo():
-        console.print(f"[bold red]Error:[/bold red] The `gg {ctx.invoked_subcommand}` command must be run inside a Git repository.")
-        raise typer.Exit(code=1)
+    command = ctx.invoked_subcommand
+    # 'help' command can run anywhere, no checks needed.
+    if command == 'help':
+        return
+
+    # For commands like 'profile' and 'config', we only need a user identity.
+    # The identity is derived from the git email.
+    if command in ['profile', 'config']:
+        if get_current_git_email() is None:
+            console.print("[bold red]Error:[/bold red] Cannot find Git user email.")
+            console.print("Please run `git config --global user.email 'your@email.com'` to set your identity.")
+            raise typer.Exit(code=1)
+
+    # For any other future commands that might modify a repository,
+    # we would add a check for `is_in_git_repo()` here.
 
 
 @app.command("help")

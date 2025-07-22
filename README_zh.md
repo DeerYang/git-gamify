@@ -21,7 +21,7 @@
 
 ---
 
-<img width="1090" height="683" alt="Image" src="https://github.com/user-attachments/assets/4d609ed1-1a21-4ec0-953b-c7a7280e5a99" />
+<img width="1110" height="622" alt="Image" src="https://github.com/user-attachments/assets/00cd62d4-2984-43ca-87c1-e8683c419b5c" />
 
 ## ✨ Git-Gamify 是什么？
 
