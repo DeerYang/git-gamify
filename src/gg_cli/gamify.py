@@ -20,6 +20,11 @@ LEVEL_TIERS = [
     (30, 500, "level_title_journeyman"),
     (40, 1000, "level_title_adept"),
     (50, 2500, "level_title_master"),
+    (60, 5000, "level_title_expert"),
+    (70, 7500, "level_title_genius"),
+    (80, 10000, "level_title_legendary"),
+    (90, 15000, "level_title_marvelous"),
+    (100, 25000, "level_title_champion"),
 ]
 
 
