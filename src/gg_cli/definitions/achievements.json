@@ -22,6 +22,11 @@
       "desc_key": "ach_commit_100_desc",
       "xp_reward": 300
     },
+    "push_10": {
+      "name_key": "ach_push_10_name",
+      "desc_key": "ach_push_10_desc",
+      "xp_reward": 100
+    },
     "push_50": {
       "name_key": "ach_push_50_name",
       "desc_key": "ach_push_50_desc",
