@@ -22,15 +22,45 @@
       "desc_key": "ach_commit_100_desc",
       "xp_reward": 300
     },
+    "push_10": {
+      "name_key": "ach_push_10_name",
+      "desc_key": "ach_push_10_desc",
+      "xp_reward": 100
+    },
     "push_50": {
       "name_key": "ach_push_50_name",
       "desc_key": "ach_push_50_desc",
       "xp_reward": 350
     },
+    "push_100": {
+      "name_key": "ach_push_100_name",
+      "desc_key": "ach_push_100_desc",
+      "xp_reward": 500
+    },
+    "push_500": {
+      "name_key": "ach_push_500_name",
+      "desc_key": "ach_push_500_desc",
+      "xp_reward": 2000
+    },
+    "push_1000": {
+      "name_key": "ach_push_1000_name",
+      "desc_key": "ach_push_1000_desc",
+      "xp_reward": 3000
+    },
     "commit_1000": {
       "name_key": "ach_commit_1000_name",
       "desc_key": "ach_commit_1000_desc",
       "xp_reward": 1000
+    },
+    "commit_5000": {
+      "name_key": "ach_commit_5000_name",
+      "desc_key": "ach_commit_5000_desc",
+      "xp_reward": 2000
+    }
+    "commit_10000": {
+      "name_key": "ach_commit_10000_name",
+      "desc_key": "ach_commit_10000_desc",
+      "xp_reward": 2500
     }
   },
   "consistency": {
@@ -48,6 +78,21 @@
       "name_key": "ach_combo_30_name",
       "desc_key": "ach_combo_30_desc",
       "xp_reward": 1200
+    },
+    "combo_90": {
+      "name_key": "ach_combo_90_name",
+      "desc_key": "ach_combo_90_desc",
+      "xp_reward": 2000
+    },
+    "combo_180": {
+      "name_key": "ach_combo_180_name",
+      "desc_key": "ach_combo_180_desc",
+      "xp_reward": 3000
+    },
+    "combo_365": {
+      "name_key": "ach_combo_365_name",
+      "desc_key": "ach_combo_365_desc",
+      "xp_reward": 5000
     }
   },
   "special": {
