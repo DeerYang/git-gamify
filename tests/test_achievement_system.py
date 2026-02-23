@@ -10,6 +10,7 @@ from gg_cli.achievements import ACHIEVEMENTS_DEF, check_all_achievements
 
 
 def test_unlock_first_commit(user_data_factory, translator):
+    """First commit achievement should unlock and grant its configured XP."""
     data = user_data_factory()
     data["stats"]["total_commits"] = 1
 
@@ -21,6 +22,7 @@ def test_unlock_first_commit(user_data_factory, translator):
 
 
 def test_unlock_higher_combo_only_when_lower_is_already_unlocked(user_data_factory, translator):
+    """Higher streak tiers should unlock when prerequisite progression exists."""
     data = user_data_factory()
     data["achievements_unlocked"]["combo_3"] = "2025-01-01"
     data["stats"]["consecutive_commit_days"] = 7
@@ -44,6 +46,7 @@ def test_unlock_higher_combo_only_when_lower_is_already_unlocked(user_data_facto
     ],
 )
 def test_special_achievement_unlocks(user_data_factory, translator, context, achievement_id):
+    """Context-driven achievements should unlock for their matching event payloads."""
     data = user_data_factory()
 
     gained_xp = check_all_achievements(data, translator, context=context)
@@ -53,6 +56,7 @@ def test_special_achievement_unlocks(user_data_factory, translator, context, ach
 
 
 def test_daily_commit_achievements(user_data_factory, translator):
+    """Daily commit milestones should unlock based on same-day commit count."""
     data = user_data_factory()
     data["stats"]["daily_commit_count"] = 6
 
@@ -67,6 +71,7 @@ def test_daily_commit_achievements(user_data_factory, translator):
 
 
 def test_balanced_day_unlocks_on_push(user_data_factory, translator):
+    """Balanced-day achievement should unlock when commit and push happen today."""
     data = user_data_factory()
     today = date.today().isoformat()
     data["stats"]["last_commit_date"] = today
@@ -79,6 +84,7 @@ def test_balanced_day_unlocks_on_push(user_data_factory, translator):
 
 
 def test_already_unlocked_achievement_grants_no_xp(user_data_factory, translator):
+    """Unlocked achievements must not re-award XP on later checks."""
     data = user_data_factory()
     data["stats"]["total_commits"] = 5
     data["achievements_unlocked"]["first_commit"] = "2025-01-01"

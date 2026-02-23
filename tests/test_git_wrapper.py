@@ -8,6 +8,7 @@ from gg_cli.main import run_git_wrapper
 
 
 def test_run_git_wrapper_triggers_gamify_on_success(monkeypatch):
+    """Successful git commit should trigger gamification processing."""
     calls = []
 
     class StubService:
@@ -27,6 +28,7 @@ def test_run_git_wrapper_triggers_gamify_on_success(monkeypatch):
 
 
 def test_run_git_wrapper_skips_gamify_on_failure(monkeypatch):
+    """Failed git commands must not trigger gamification side effects."""
     calls = []
 
     class StubService:

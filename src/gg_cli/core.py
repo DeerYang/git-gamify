@@ -80,6 +80,7 @@ class UserRepository:
         return self.data_dir / filename
 
     def load(self, email: str | None) -> dict[str, Any]:
+        """Load profile by email and merge with current default schema."""
         if not email:
             return get_default_user_data()
 
@@ -102,6 +103,7 @@ class UserRepository:
         return user_data
 
     def save(self, data: dict[str, Any]) -> None:
+        """Persist profile data using an atomic replace operation."""
         email = data.get("config", {}).get("user_email")
         if not email:
             return

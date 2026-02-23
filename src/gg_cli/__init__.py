@@ -1,0 +1,1 @@
+"""Git-Gamify package root."""

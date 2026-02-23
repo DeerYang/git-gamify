@@ -118,6 +118,7 @@ def _process_commit_event(
     git_service: GitService,
     xp_rules: dict[str, int],
 ) -> int:
+    """Apply commit-specific stat updates and compute base XP for the event."""
     stats = user_data["stats"]
     _reset_daily_trackers_if_needed(stats, event.today)
     stats["total_commits"] += 1
@@ -144,6 +145,7 @@ def _process_commit_event(
 
     try:
         diff_stats = git_service.get_shortstat_last_commit()
+        # Extract numeric tokens from git shortstat for a lightweight size metric.
         changes = sum(int(token) for token in diff_stats.split() if token.isdigit())
         event.context["changes"] = changes
         change_xp = _get_change_bonus(changes, xp_rules)
@@ -165,6 +167,7 @@ def _process_commit_event(
 def _process_push_event(
     user_data: dict[str, Any], event: GamifyEvent, xp_rules: dict[str, int]
 ) -> int:
+    """Apply push-specific XP rules, including first-push bonus and daily cap."""
     stats = user_data["stats"]
     _reset_daily_trackers_if_needed(stats, event.today)
     stats["total_pushes"] += 1
@@ -182,6 +185,7 @@ def _process_push_event(
 
 
 def _reset_daily_trackers_if_needed(stats: dict[str, Any], today: date) -> None:
+    """Reset per-day counters when date has moved to a new day."""
     today_str = today.isoformat()
     if stats.get("daily_xp_date") == today_str:
         return
@@ -191,6 +195,7 @@ def _reset_daily_trackers_if_needed(stats: dict[str, Any], today: date) -> None:
 
 
 def _get_commit_reward_multiplier(commit_count_today: int, xp_rules: dict[str, int]) -> float:
+    """Return XP multiplier based on how many commits already happened today."""
     if commit_count_today <= xp_rules["commit_full_reward_count"]:
         return 1.0
     if commit_count_today <= xp_rules["commit_half_reward_count"]:
@@ -199,6 +204,7 @@ def _get_commit_reward_multiplier(commit_count_today: int, xp_rules: dict[str, i
 
 
 def _get_streak_bonus(consecutive_days: int) -> int:
+    """Return streak XP bonus based on consecutive commit days."""
     if consecutive_days >= 31:
         return 5
     if consecutive_days >= 15:
@@ -211,6 +217,7 @@ def _get_streak_bonus(consecutive_days: int) -> int:
 
 
 def _get_change_bonus(changes: int, xp_rules: dict[str, int]) -> int:
+    """Return commit-size bonus XP based on configured diff-size thresholds."""
     if changes >= xp_rules["commit_change_tier3"]:
         return xp_rules["commit_change_bonus_tier3"]
     if changes >= xp_rules["commit_change_tier2"]:
@@ -226,6 +233,7 @@ def _apply_level_progression(
     xp_to_add: int,
     reward_rng: random.Random | None = None,
 ) -> None:
+    """Apply XP to profile, print progression info, and grant level-up rewards."""
     if xp_to_add <= 0:
         return
 
@@ -268,6 +276,7 @@ def _apply_level_progression(
         if pool in _REWARDS_DEF and language in _REWARDS_DEF[pool] and _REWARDS_DEF[pool][language]
     ]
     if not available_reward_pools:
+        # Defensive fallback for malformed or incomplete reward definitions.
         available_reward_pools = ["quotes"]
     reward_type = rng.choice(available_reward_pools)
     reward = rng.choice(_REWARDS_DEF[reward_type][language])

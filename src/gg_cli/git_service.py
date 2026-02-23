@@ -20,6 +20,7 @@ class GitService:
     """Wrapper around git CLI calls to improve testability."""
 
     def run(self, args: list[str]) -> GitCommandResult:
+        """Run a git command and return captured streams and exit code."""
         result = subprocess.run(
             ["git"] + args,
             capture_output=True,
@@ -34,6 +35,7 @@ class GitService:
         )
 
     def get_shortstat_last_commit(self) -> str:
+        """Return short diff stats between `HEAD~1` and `HEAD`."""
         return subprocess.check_output(
             ["git", "diff", "--shortstat", "HEAD~1", "HEAD"],
             text=True,
@@ -41,6 +43,7 @@ class GitService:
         ).strip()
 
     def get_last_commit_message(self) -> str:
+        """Return the latest commit message body."""
         return subprocess.check_output(
             ["git", "log", "-1", "--pretty=%B"],
             text=True,

@@ -315,6 +315,7 @@ def check_all_achievements(
     xp_from_achievements = 0
 
     for ach_id, checker_func in ACHIEVEMENT_CHECKERS.items():
+        # Skip work early for already unlocked or undefined achievements.
         if ach_id in user_data["achievements_unlocked"]:
             continue
         if ach_id not in ACHIEVEMENTS_DEF:
@@ -324,10 +325,12 @@ def check_all_achievements(
         if not result:
             continue
 
+        # Persist unlock timestamp and add XP immediately.
         user_data["achievements_unlocked"][ach_id] = date.today().isoformat()
         reward = int(ACHIEVEMENTS_DEF[ach_id].get("xp_reward", 0))
         xp_from_achievements += reward
 
+        # Render a compact unlock panel for terminal feedback.
         name = translator.t(ACHIEVEMENTS_DEF[ach_id]["name_key"])
         desc = translator.t(ACHIEVEMENTS_DEF[ach_id]["desc_key"])
         panel_title = translator.t("achievement_unlocked_panel_title")

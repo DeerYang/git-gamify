@@ -8,10 +8,12 @@ from gg_cli.definitions_loader import DefinitionsValidationError, validate_defin
 
 
 def test_validate_definitions_passes_for_current_files():
+    """Repository definitions should pass validation in normal state."""
     validate_definitions()
 
 
 def _base_valid_payloads():
+    """Construct minimal valid in-memory payloads for mutation-based tests."""
     achievements = {
         "custom": {
             "name_key": "ach_custom_name",
@@ -39,6 +41,7 @@ def _base_valid_payloads():
     ],
 )
 def test_validate_definitions_fails_on_broken_payloads(monkeypatch, mutator):
+    """Validation should fail when key locale/achievement/reward invariants are broken."""
     achievements, locales, rewards = _base_valid_payloads()
     mutator(achievements, locales, rewards)
 

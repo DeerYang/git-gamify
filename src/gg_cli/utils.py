@@ -1,20 +1,17 @@
-# src/gg_cli/utils.py
-"""Global utilities and path definitions for the Git-Gamify project."""
+"""Shared project utilities and filesystem paths."""
 
 from pathlib import Path
+
 from rich.console import Console
 
-# Global Rich Console instance for consistent output styling.
+# Shared Rich console used by CLI and runtime messages.
 console = Console()
 
-# Define key project paths relative to this file's location to ensure they
-# work correctly even when packaged.
+# Package-relative paths for static assets bundled with the project.
 _CODE_DIR = Path(__file__).parent
 DEFINITIONS_DIR = _CODE_DIR / "definitions"
 LOCALES_DIR = _CODE_DIR / "locales"
 
-# Define the user data directory in the user's home folder.
+# Persistent user data directory under the current OS user home.
 DATA_DIR = Path.home() / ".git-gamify"
-
-# Ensure the user data directory exists upon import.
 DATA_DIR.mkdir(exist_ok=True)

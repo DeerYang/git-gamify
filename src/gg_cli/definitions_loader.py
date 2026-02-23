@@ -17,11 +17,13 @@ class DefinitionsValidationError(RuntimeError):
 
 
 def _load_json(path: Path) -> dict[str, Any]:
+    """Load a UTF-8/UTF-8-BOM JSON file into a dictionary."""
     with open(path, "r", encoding="utf-8-sig") as f:
         return json.load(f)
 
 
 def load_achievements_flat() -> dict[str, dict[str, Any]]:
+    """Load grouped achievements and flatten them into a single map."""
     raw = _load_json(DEFINITIONS_DIR / "achievements.json")
     return {
         achievement_id: achievement
@@ -31,10 +33,12 @@ def load_achievements_flat() -> dict[str, dict[str, Any]]:
 
 
 def load_rewards() -> dict[str, Any]:
+    """Load reward pools used when users level up."""
     return _load_json(DEFINITIONS_DIR / "rewards.json")
 
 
 def load_locale(locale: str) -> dict[str, str]:
+    """Load one locale file and normalize all values as strings."""
     data = _load_json(LOCALES_DIR / f"{locale}.json")
     return {k: str(v) for k, v in data.items()}
 

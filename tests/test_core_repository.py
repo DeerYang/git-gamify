@@ -11,6 +11,7 @@ from gg_cli.core import UserRepository, get_default_user_data
 
 
 def test_user_repository_round_trip(tmp_path: Path):
+    """Saved profile data should be readable without loss."""
     repo = UserRepository(tmp_path)
     data = get_default_user_data("test@example.com")
     data["stats"]["total_commits"] = 3
@@ -22,6 +23,7 @@ def test_user_repository_round_trip(tmp_path: Path):
 
 
 def test_user_repository_merges_partial_schema_from_disk(tmp_path: Path):
+    """Partial legacy files should be merged with default schema keys."""
     repo = UserRepository(tmp_path)
     profile_path = repo.get_profile_path("test@example.com")
     profile_path.write_text(
@@ -40,6 +42,7 @@ def test_user_repository_merges_partial_schema_from_disk(tmp_path: Path):
 
 
 def test_user_repository_recovers_from_corrupt_file(tmp_path: Path):
+    """Corrupted JSON should be replaced by a clean default profile."""
     repo = UserRepository(tmp_path)
     profile_path = repo.get_profile_path("test@example.com")
     profile_path.write_text("{bad-json", encoding="utf-8")
@@ -50,6 +53,7 @@ def test_user_repository_recovers_from_corrupt_file(tmp_path: Path):
 
 
 def test_user_repository_cleans_temp_file_when_replace_fails(tmp_path: Path, monkeypatch):
+    """Atomic-save temp files should be removed if replace step fails."""
     repo = UserRepository(tmp_path)
     data = get_default_user_data("test@example.com")
 

@@ -37,26 +37,31 @@ class StubGitService:
 
 @pytest.fixture
 def runner() -> CliRunner:
+    """Provide a Typer CLI runner for command invocation tests."""
     return CliRunner()
 
 
 @pytest.fixture
 def translator() -> StubTranslator:
+    """Provide deterministic translator behavior for unit tests."""
     return StubTranslator()
 
 
 @pytest.fixture
 def user_data() -> dict[str, Any]:
+    """Provide a default mutable user profile payload."""
     return get_default_user_data("test@example.com")
 
 
 @pytest.fixture
 def git_service() -> StubGitService:
+    """Provide a git service stub with stable diff/message values."""
     return StubGitService()
 
 
 @pytest.fixture
 def today() -> date:
+    """Provide a fixed calendar day for deterministic date assertions."""
     return date(2026, 2, 2)
 
 

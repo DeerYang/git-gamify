@@ -25,6 +25,7 @@ from gg_cli.gamify import (
     ],
 )
 def test_get_level_from_xp_scenarios(xp, expected_level):
+    """Representative XP values should map to expected level boundaries."""
     assert get_level_from_xp(xp) == expected_level
 
 
@@ -40,10 +41,12 @@ def test_get_level_from_xp_scenarios(xp, expected_level):
     ],
 )
 def test_get_total_xp_for_level_scenarios(target_level, expected_total_xp):
+    """Cumulative XP helper should match known tier checkpoints."""
     assert get_total_xp_for_level(target_level) == expected_total_xp
 
 
 def test_get_level_info_boundaries():
+    """Tier lookup should return stable metadata around tier boundaries."""
     _, xp_per_level_10, title_key_10 = get_level_info(10)
     assert xp_per_level_10 == 220
     assert title_key_10 == "level_title_novice"
@@ -54,6 +57,7 @@ def test_get_level_info_boundaries():
 
 
 def test_level_from_xp_is_monotonic():
+    """Level should never decrease as XP increases."""
     previous_level = 1
     for xp in range(0, 20000, 37):
         level = get_level_from_xp(xp)
@@ -62,11 +66,13 @@ def test_level_from_xp_is_monotonic():
 
 
 def test_get_level_info_handles_invalid_level_inputs():
+    """Invalid level inputs should normalize to first tier metadata."""
     assert get_level_info(0) == LEVEL_TIERS[0]
     assert get_level_info(-5) == LEVEL_TIERS[0]
     assert get_level_info("bad") == LEVEL_TIERS[0]
 
 
 def test_get_level_from_xp_handles_invalid_inputs():
+    """Invalid XP inputs should normalize to level 1."""
     assert get_level_from_xp(-1) == 1
     assert get_level_from_xp("bad") == 1

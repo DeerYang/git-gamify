@@ -11,6 +11,7 @@ from gg_cli.gamify import GamifyEvent, process_event, process_gamify_logic
 
 
 def test_process_commit_event_updates_stats_and_context(user_data_factory, translator, git_service):
+    """Commit events should update commit counters and enrich event context."""
     data = user_data_factory()
     event = GamifyEvent(command="commit", args=["commit", "-m", "x"], today=date(2026, 2, 1))
 
@@ -24,6 +25,7 @@ def test_process_commit_event_updates_stats_and_context(user_data_factory, trans
 
 
 def test_process_commit_event_streak_increments_and_resets(user_data_factory, translator, git_service):
+    """Streak counter should increment day-by-day and reset after multi-day gaps."""
     data = user_data_factory()
     data["stats"]["last_commit_date"] = "2026-02-01"
     data["stats"]["consecutive_commit_days"] = 2
@@ -38,6 +40,7 @@ def test_process_commit_event_streak_increments_and_resets(user_data_factory, tr
 
 
 def test_process_push_event_applies_daily_bonus_once(user_data_factory, translator):
+    """First push of day should receive bonus, following pushes should be capped."""
     data = user_data_factory()
     data["achievements_unlocked"]["first_push"] = "2026-01-01"
     today = date(2026, 2, 2)
@@ -54,6 +57,7 @@ def test_process_push_event_applies_daily_bonus_once(user_data_factory, translat
 
 
 def test_process_commit_event_applies_daily_decay(user_data_factory, translator, git_service):
+    """Commit XP should decay within the day and eventually reach zero."""
     data = user_data_factory()
     data["achievements_unlocked"]["first_commit"] = "2026-01-01"
     today = date(2026, 2, 2)
@@ -69,6 +73,7 @@ def test_process_commit_event_applies_daily_decay(user_data_factory, translator,
 
 
 def test_process_event_tolerates_commit_diff_failures(user_data_factory, translator, monkeypatch):
+    """Commit processing should stay resilient when git metadata lookups fail."""
     data = user_data_factory()
     event = GamifyEvent(command="commit", args=["commit"], today=date(2026, 2, 2))
 
@@ -85,6 +90,7 @@ def test_process_event_tolerates_commit_diff_failures(user_data_factory, transla
 
 
 def test_process_gamify_logic_handles_invalid_definitions(monkeypatch):
+    """Top-level gamify logic should exit gracefully on invalid definitions."""
     monkeypatch.setattr(
         "gg_cli.gamify.ensure_runtime_definitions_valid",
         lambda: (_ for _ in ()).throw(DefinitionsValidationError("bad defs")),
@@ -93,6 +99,7 @@ def test_process_gamify_logic_handles_invalid_definitions(monkeypatch):
 
 
 def test_process_gamify_logic_exits_when_user_email_missing(monkeypatch, user_data_factory):
+    """Gamify logic should skip persistence when user identity is missing."""
     data = user_data_factory()
     data["config"]["user_email"] = None
     saves = []

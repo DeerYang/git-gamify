@@ -10,6 +10,7 @@ pytestmark = pytest.mark.allow_console_output
 
 
 def test_cli_help_command(runner):
+    """Custom help command should render successfully."""
     result = runner.invoke(app, ["help"])
     assert result.exit_code == 0
     assert "profile" in result.stdout
@@ -17,6 +18,7 @@ def test_cli_help_command(runner):
 
 
 def test_cli_profile_requires_git_email(monkeypatch, runner):
+    """Profile command should fail fast when git identity is unavailable."""
     monkeypatch.setattr("gg_cli.main.get_current_git_email", lambda: None)
     result = runner.invoke(app, ["profile"])
     assert result.exit_code != 0
@@ -24,6 +26,7 @@ def test_cli_profile_requires_git_email(monkeypatch, runner):
 
 
 def test_cli_help_works_without_git_email(monkeypatch, runner):
+    """Help command should remain usable without git configuration."""
     monkeypatch.setattr("gg_cli.main.get_current_git_email", lambda: None)
     result = runner.invoke(app, ["help"])
     assert result.exit_code == 0
@@ -31,6 +34,7 @@ def test_cli_help_works_without_git_email(monkeypatch, runner):
 
 
 def test_cli_config_get_language(monkeypatch, runner, user_data_factory):
+    """Config getter should read language from persisted user profile."""
     data = user_data_factory()
     data["config"]["language"] = "zh"
     monkeypatch.setattr("gg_cli.main.load_user_data", lambda: data)
@@ -41,6 +45,7 @@ def test_cli_config_get_language(monkeypatch, runner, user_data_factory):
 
 
 def test_cli_config_set_language_persists(monkeypatch, runner, user_data_factory):
+    """Config setter should mutate profile payload and trigger save operation."""
     data = user_data_factory()
     saves = []
 
@@ -57,6 +62,7 @@ def test_cli_config_set_language_persists(monkeypatch, runner, user_data_factory
 
 
 def test_cli_config_set_invalid_format(monkeypatch, runner):
+    """Malformed `--set` payload should return a validation message."""
     monkeypatch.setattr("gg_cli.main.get_current_git_email", lambda: "test@example.com")
     monkeypatch.setattr("gg_cli.main.load_user_data", lambda: {"config": {}})
     result = runner.invoke(app, ["config", "--set", "language"])
