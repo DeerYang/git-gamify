@@ -27,8 +27,9 @@ def test_unlock_higher_combo_only_when_lower_is_already_unlocked(user_data_facto
 
     gained_xp = check_all_achievements(data, translator, context={"command": "commit"})
 
+    assert "combo_5" in data["achievements_unlocked"]
     assert "combo_7" in data["achievements_unlocked"]
-    assert gained_xp == ACHIEVEMENTS_DEF["combo_7"]["xp_reward"]
+    assert gained_xp >= ACHIEVEMENTS_DEF["combo_7"]["xp_reward"]
 
 
 @pytest.mark.parametrize(
@@ -36,6 +37,10 @@ def test_unlock_higher_combo_only_when_lower_is_already_unlocked(user_data_facto
     [
         ({"command": "commit", "deletions": 501}, "firefighter"),
         ({"command": "commit", "commit_message": "word " * 50}, "storyteller"),
+        ({"command": "commit", "commit_message": "fix: close bug #12"}, "bug_hunter"),
+        ({"command": "commit", "commit_message": "refactor: extract helper"}, "refactor_artist"),
+        ({"command": "commit", "deletions": 120}, "cleanup_crew"),
+        ({"command": "commit", "changes": 220}, "big_wave"),
     ],
 )
 def test_special_achievement_unlocks(user_data_factory, translator, context, achievement_id):
@@ -45,6 +50,32 @@ def test_special_achievement_unlocks(user_data_factory, translator, context, ach
 
     assert achievement_id in data["achievements_unlocked"]
     assert gained_xp >= ACHIEVEMENTS_DEF[achievement_id]["xp_reward"]
+
+
+def test_daily_commit_achievements(user_data_factory, translator):
+    data = user_data_factory()
+    data["stats"]["daily_commit_count"] = 6
+
+    gained_xp = check_all_achievements(data, translator, context={"command": "commit"})
+
+    assert "daily_commit_3" in data["achievements_unlocked"]
+    assert "daily_commit_6" in data["achievements_unlocked"]
+    assert gained_xp >= (
+        ACHIEVEMENTS_DEF["daily_commit_3"]["xp_reward"]
+        + ACHIEVEMENTS_DEF["daily_commit_6"]["xp_reward"]
+    )
+
+
+def test_balanced_day_unlocks_on_push(user_data_factory, translator):
+    data = user_data_factory()
+    today = date.today().isoformat()
+    data["stats"]["last_commit_date"] = today
+    data["stats"]["last_push_date"] = today
+
+    gained_xp = check_all_achievements(data, translator, context={"command": "push"})
+
+    assert "balanced_day" in data["achievements_unlocked"]
+    assert gained_xp >= ACHIEVEMENTS_DEF["balanced_day"]["xp_reward"]
 
 
 def test_already_unlocked_achievement_grants_no_xp(user_data_factory, translator):

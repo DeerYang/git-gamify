@@ -145,6 +145,7 @@ def _process_commit_event(
     try:
         diff_stats = git_service.get_shortstat_last_commit()
         changes = sum(int(token) for token in diff_stats.split() if token.isdigit())
+        event.context["changes"] = changes
         change_xp = _get_change_bonus(changes, xp_rules)
 
         deletions_match = re.search(r"(\d+)\s+deletions", diff_stats)
@@ -260,7 +261,15 @@ def _apply_level_progression(
 
     language = user_data.get("config", {}).get("language", "en")
     rng = reward_rng or random
-    reward_type = rng.choice(["quotes", "jokes"])
+    reward_pools = ["tips", "quotes", "jokes", "challenges"]
+    available_reward_pools = [
+        pool
+        for pool in reward_pools
+        if pool in _REWARDS_DEF and language in _REWARDS_DEF[pool] and _REWARDS_DEF[pool][language]
+    ]
+    if not available_reward_pools:
+        available_reward_pools = ["quotes"]
+    reward_type = rng.choice(available_reward_pools)
     reward = rng.choice(_REWARDS_DEF[reward_type][language])
     console.print(
         Panel(

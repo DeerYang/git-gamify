@@ -3,113 +3,518 @@
     "first_commit": {
       "name_key": "ach_first_commit_name",
       "desc_key": "ach_first_commit_desc",
-      "xp_reward": 30
+      "xp_reward": 30,
+      "rarity": "common"
     },
     "first_push": {
       "name_key": "ach_first_push_name",
       "desc_key": "ach_first_push_desc",
-      "xp_reward": 30
+      "xp_reward": 30,
+      "rarity": "common"
     }
   },
-  "milestone": {
+  "daily_rhythm": {
+    "daily_commit_3": {
+      "name_key": "ach_daily_commit_3_name",
+      "desc_key": "ach_daily_commit_3_desc",
+      "xp_reward": 76,
+      "rarity": "common"
+    },
+    "daily_commit_4": {
+      "name_key": "ach_daily_commit_4_name",
+      "desc_key": "ach_daily_commit_4_desc",
+      "xp_reward": 88,
+      "rarity": "common"
+    },
+    "daily_commit_6": {
+      "name_key": "ach_daily_commit_6_name",
+      "desc_key": "ach_daily_commit_6_desc",
+      "xp_reward": 112,
+      "rarity": "common"
+    },
+    "daily_commit_8": {
+      "name_key": "ach_daily_commit_8_name",
+      "desc_key": "ach_daily_commit_8_desc",
+      "xp_reward": 136,
+      "rarity": "uncommon"
+    },
+    "daily_commit_10": {
+      "name_key": "ach_daily_commit_10_name",
+      "desc_key": "ach_daily_commit_10_desc",
+      "xp_reward": 160,
+      "rarity": "uncommon"
+    },
+    "daily_commit_12": {
+      "name_key": "ach_daily_commit_12_name",
+      "desc_key": "ach_daily_commit_12_desc",
+      "xp_reward": 184,
+      "rarity": "uncommon"
+    }
+  },
+  "commit_milestones": {
     "commit_10": {
       "name_key": "ach_commit_10_name",
       "desc_key": "ach_commit_10_desc",
-      "xp_reward": 80
+      "xp_reward": 80,
+      "rarity": "common"
+    },
+    "commit_20": {
+      "name_key": "ach_commit_20_name",
+      "desc_key": "ach_commit_20_desc",
+      "xp_reward": 100,
+      "rarity": "common"
+    },
+    "commit_35": {
+      "name_key": "ach_commit_35_name",
+      "desc_key": "ach_commit_35_desc",
+      "xp_reward": 130,
+      "rarity": "common"
+    },
+    "commit_50": {
+      "name_key": "ach_commit_50_name",
+      "desc_key": "ach_commit_50_desc",
+      "xp_reward": 160,
+      "rarity": "common"
+    },
+    "commit_75": {
+      "name_key": "ach_commit_75_name",
+      "desc_key": "ach_commit_75_desc",
+      "xp_reward": 315,
+      "rarity": "common"
     },
     "commit_100": {
       "name_key": "ach_commit_100_name",
       "desc_key": "ach_commit_100_desc",
-      "xp_reward": 180
+      "xp_reward": 360,
+      "rarity": "common"
     },
-    "push_10": {
-      "name_key": "ach_push_10_name",
-      "desc_key": "ach_push_10_desc",
-      "xp_reward": 80
+    "commit_150": {
+      "name_key": "ach_commit_150_name",
+      "desc_key": "ach_commit_150_desc",
+      "xp_reward": 450,
+      "rarity": "uncommon"
     },
-    "push_50": {
-      "name_key": "ach_push_50_name",
-      "desc_key": "ach_push_50_desc",
-      "xp_reward": 220
+    "commit_200": {
+      "name_key": "ach_commit_200_name",
+      "desc_key": "ach_commit_200_desc",
+      "xp_reward": 540,
+      "rarity": "uncommon"
     },
-    "push_100": {
-      "name_key": "ach_push_100_name",
-      "desc_key": "ach_push_100_desc",
-      "xp_reward": 400
+    "commit_300": {
+      "name_key": "ach_commit_300_name",
+      "desc_key": "ach_commit_300_desc",
+      "xp_reward": 900,
+      "rarity": "uncommon"
     },
-    "push_500": {
-      "name_key": "ach_push_500_name",
-      "desc_key": "ach_push_500_desc",
-      "xp_reward": 1000
+    "commit_400": {
+      "name_key": "ach_commit_400_name",
+      "desc_key": "ach_commit_400_desc",
+      "xp_reward": 1050,
+      "rarity": "uncommon"
     },
-    "push_1000": {
-      "name_key": "ach_push_1000_name",
-      "desc_key": "ach_push_1000_desc",
-      "xp_reward": 2000
+    "commit_600": {
+      "name_key": "ach_commit_600_name",
+      "desc_key": "ach_commit_600_desc",
+      "xp_reward": 1350,
+      "rarity": "uncommon"
+    },
+    "commit_800": {
+      "name_key": "ach_commit_800_name",
+      "desc_key": "ach_commit_800_desc",
+      "xp_reward": 1650,
+      "rarity": "uncommon"
     },
     "commit_1000": {
       "name_key": "ach_commit_1000_name",
       "desc_key": "ach_commit_1000_desc",
-      "xp_reward": 320
+      "xp_reward": 1950,
+      "rarity": "rare"
+    },
+    "commit_1500": {
+      "name_key": "ach_commit_1500_name",
+      "desc_key": "ach_commit_1500_desc",
+      "xp_reward": 3000,
+      "rarity": "rare"
+    },
+    "commit_2000": {
+      "name_key": "ach_commit_2000_name",
+      "desc_key": "ach_commit_2000_desc",
+      "xp_reward": 3600,
+      "rarity": "rare"
+    },
+    "commit_3000": {
+      "name_key": "ach_commit_3000_name",
+      "desc_key": "ach_commit_3000_desc",
+      "xp_reward": 4800,
+      "rarity": "rare"
     },
     "commit_5000": {
       "name_key": "ach_commit_5000_name",
       "desc_key": "ach_commit_5000_desc",
-      "xp_reward": 700
+      "xp_reward": 7500,
+      "rarity": "epic"
+    },
+    "commit_8000": {
+      "name_key": "ach_commit_8000_name",
+      "desc_key": "ach_commit_8000_desc",
+      "xp_reward": 10200,
+      "rarity": "epic"
     },
     "commit_10000": {
       "name_key": "ach_commit_10000_name",
       "desc_key": "ach_commit_10000_desc",
-      "xp_reward": 1800
+      "xp_reward": 12000,
+      "rarity": "epic"
+    },
+    "commit_12000": {
+      "name_key": "ach_commit_12000_name",
+      "desc_key": "ach_commit_12000_desc",
+      "xp_reward": 13800,
+      "rarity": "epic"
+    },
+    "commit_15000": {
+      "name_key": "ach_commit_15000_name",
+      "desc_key": "ach_commit_15000_desc",
+      "xp_reward": 16500,
+      "rarity": "epic"
     }
   },
-  "consistency": {
+  "push_milestones": {
+    "push_10": {
+      "name_key": "ach_push_10_name",
+      "desc_key": "ach_push_10_desc",
+      "xp_reward": 70,
+      "rarity": "common"
+    },
+    "push_20": {
+      "name_key": "ach_push_20_name",
+      "desc_key": "ach_push_20_desc",
+      "xp_reward": 90,
+      "rarity": "common"
+    },
+    "push_35": {
+      "name_key": "ach_push_35_name",
+      "desc_key": "ach_push_35_desc",
+      "xp_reward": 120,
+      "rarity": "common"
+    },
+    "push_50": {
+      "name_key": "ach_push_50_name",
+      "desc_key": "ach_push_50_desc",
+      "xp_reward": 150,
+      "rarity": "common"
+    },
+    "push_75": {
+      "name_key": "ach_push_75_name",
+      "desc_key": "ach_push_75_desc",
+      "xp_reward": 270,
+      "rarity": "common"
+    },
+    "push_100": {
+      "name_key": "ach_push_100_name",
+      "desc_key": "ach_push_100_desc",
+      "xp_reward": 310,
+      "rarity": "common"
+    },
+    "push_150": {
+      "name_key": "ach_push_150_name",
+      "desc_key": "ach_push_150_desc",
+      "xp_reward": 390,
+      "rarity": "uncommon"
+    },
+    "push_200": {
+      "name_key": "ach_push_200_name",
+      "desc_key": "ach_push_200_desc",
+      "xp_reward": 470,
+      "rarity": "uncommon"
+    },
+    "push_300": {
+      "name_key": "ach_push_300_name",
+      "desc_key": "ach_push_300_desc",
+      "xp_reward": 740,
+      "rarity": "uncommon"
+    },
+    "push_400": {
+      "name_key": "ach_push_400_name",
+      "desc_key": "ach_push_400_desc",
+      "xp_reward": 870,
+      "rarity": "uncommon"
+    },
+    "push_600": {
+      "name_key": "ach_push_600_name",
+      "desc_key": "ach_push_600_desc",
+      "xp_reward": 1130,
+      "rarity": "uncommon"
+    },
+    "push_800": {
+      "name_key": "ach_push_800_name",
+      "desc_key": "ach_push_800_desc",
+      "xp_reward": 1390,
+      "rarity": "uncommon"
+    },
+    "push_1000": {
+      "name_key": "ach_push_1000_name",
+      "desc_key": "ach_push_1000_desc",
+      "xp_reward": 1650,
+      "rarity": "rare"
+    },
+    "push_1500": {
+      "name_key": "ach_push_1500_name",
+      "desc_key": "ach_push_1500_desc",
+      "xp_reward": 2550,
+      "rarity": "rare"
+    },
+    "push_2000": {
+      "name_key": "ach_push_2000_name",
+      "desc_key": "ach_push_2000_desc",
+      "xp_reward": 3100,
+      "rarity": "rare"
+    },
+    "push_3000": {
+      "name_key": "ach_push_3000_name",
+      "desc_key": "ach_push_3000_desc",
+      "xp_reward": 4200,
+      "rarity": "rare"
+    },
+    "push_5000": {
+      "name_key": "ach_push_5000_name",
+      "desc_key": "ach_push_5000_desc",
+      "xp_reward": 6200,
+      "rarity": "epic"
+    },
+    "push_8000": {
+      "name_key": "ach_push_8000_name",
+      "desc_key": "ach_push_8000_desc",
+      "xp_reward": 8600,
+      "rarity": "epic"
+    }
+  },
+  "streak_milestones": {
     "combo_3": {
       "name_key": "ach_combo_3_name",
       "desc_key": "ach_combo_3_desc",
-      "xp_reward": 120
+      "xp_reward": 134,
+      "rarity": "common"
+    },
+    "combo_5": {
+      "name_key": "ach_combo_5_name",
+      "desc_key": "ach_combo_5_desc",
+      "xp_reward": 170,
+      "rarity": "common"
     },
     "combo_7": {
       "name_key": "ach_combo_7_name",
       "desc_key": "ach_combo_7_desc",
-      "xp_reward": 260
+      "xp_reward": 206,
+      "rarity": "common"
+    },
+    "combo_10": {
+      "name_key": "ach_combo_10_name",
+      "desc_key": "ach_combo_10_desc",
+      "xp_reward": 260,
+      "rarity": "common"
+    },
+    "combo_14": {
+      "name_key": "ach_combo_14_name",
+      "desc_key": "ach_combo_14_desc",
+      "xp_reward": 332,
+      "rarity": "common"
+    },
+    "combo_21": {
+      "name_key": "ach_combo_21_name",
+      "desc_key": "ach_combo_21_desc",
+      "xp_reward": 720,
+      "rarity": "uncommon"
     },
     "combo_30": {
       "name_key": "ach_combo_30_name",
       "desc_key": "ach_combo_30_desc",
-      "xp_reward": 900
+      "xp_reward": 900,
+      "rarity": "uncommon"
+    },
+    "combo_45": {
+      "name_key": "ach_combo_45_name",
+      "desc_key": "ach_combo_45_desc",
+      "xp_reward": 1200,
+      "rarity": "uncommon"
+    },
+    "combo_60": {
+      "name_key": "ach_combo_60_name",
+      "desc_key": "ach_combo_60_desc",
+      "xp_reward": 1500,
+      "rarity": "uncommon"
     },
     "combo_90": {
       "name_key": "ach_combo_90_name",
       "desc_key": "ach_combo_90_desc",
-      "xp_reward": 2200
+      "xp_reward": 2100,
+      "rarity": "uncommon"
+    },
+    "combo_120": {
+      "name_key": "ach_combo_120_name",
+      "desc_key": "ach_combo_120_desc",
+      "xp_reward": 3980,
+      "rarity": "rare"
     },
     "combo_180": {
       "name_key": "ach_combo_180_name",
       "desc_key": "ach_combo_180_desc",
-      "xp_reward": 4200
+      "xp_reward": 5420,
+      "rarity": "rare"
+    },
+    "combo_240": {
+      "name_key": "ach_combo_240_name",
+      "desc_key": "ach_combo_240_desc",
+      "xp_reward": 6860,
+      "rarity": "rare"
     },
     "combo_365": {
       "name_key": "ach_combo_365_name",
       "desc_key": "ach_combo_365_desc",
-      "xp_reward": 9000
+      "xp_reward": 9860,
+      "rarity": "rare"
+    },
+    "combo_500": {
+      "name_key": "ach_combo_500_name",
+      "desc_key": "ach_combo_500_desc",
+      "xp_reward": 15000,
+      "rarity": "legendary"
+    },
+    "combo_730": {
+      "name_key": "ach_combo_730_name",
+      "desc_key": "ach_combo_730_desc",
+      "xp_reward": 19140,
+      "rarity": "legendary"
+    },
+    "combo_1000": {
+      "name_key": "ach_combo_1000_name",
+      "desc_key": "ach_combo_1000_desc",
+      "xp_reward": 24000,
+      "rarity": "legendary"
     }
   },
-  "special": {
+  "craft_achievements": {
+    "bug_hunter": {
+      "name_key": "ach_bug_hunter_name",
+      "desc_key": "ach_bug_hunter_desc",
+      "xp_reward": 100,
+      "rarity": "common"
+    },
+    "refactor_artist": {
+      "name_key": "ach_refactor_artist_name",
+      "desc_key": "ach_refactor_artist_desc",
+      "xp_reward": 110,
+      "rarity": "uncommon"
+    },
+    "docs_keeper": {
+      "name_key": "ach_docs_keeper_name",
+      "desc_key": "ach_docs_keeper_desc",
+      "xp_reward": 90,
+      "rarity": "common"
+    },
+    "test_guardian": {
+      "name_key": "ach_test_guardian_name",
+      "desc_key": "ach_test_guardian_desc",
+      "xp_reward": 120,
+      "rarity": "uncommon"
+    },
+    "chore_keeper": {
+      "name_key": "ach_chore_keeper_name",
+      "desc_key": "ach_chore_keeper_desc",
+      "xp_reward": 90,
+      "rarity": "common"
+    },
+    "perf_tuner": {
+      "name_key": "ach_perf_tuner_name",
+      "desc_key": "ach_perf_tuner_desc",
+      "xp_reward": 150,
+      "rarity": "rare"
+    },
+    "security_guard": {
+      "name_key": "ach_security_guard_name",
+      "desc_key": "ach_security_guard_desc",
+      "xp_reward": 170,
+      "rarity": "rare"
+    },
+    "release_captain": {
+      "name_key": "ach_release_captain_name",
+      "desc_key": "ach_release_captain_desc",
+      "xp_reward": 180,
+      "rarity": "rare"
+    },
+    "cleanup_crew": {
+      "name_key": "ach_cleanup_crew_name",
+      "desc_key": "ach_cleanup_crew_desc",
+      "xp_reward": 140,
+      "rarity": "uncommon"
+    },
+    "big_wave": {
+      "name_key": "ach_big_wave_name",
+      "desc_key": "ach_big_wave_desc",
+      "xp_reward": 180,
+      "rarity": "rare"
+    },
+    "tsunami": {
+      "name_key": "ach_tsunami_name",
+      "desc_key": "ach_tsunami_desc",
+      "xp_reward": 260,
+      "rarity": "epic"
+    },
+    "tiny_commit": {
+      "name_key": "ach_tiny_commit_name",
+      "desc_key": "ach_tiny_commit_desc",
+      "xp_reward": 80,
+      "rarity": "common"
+    }
+  },
+  "fun_achievements": {
+    "balanced_day": {
+      "name_key": "ach_balanced_day_name",
+      "desc_key": "ach_balanced_day_desc",
+      "xp_reward": 150,
+      "rarity": "rare"
+    },
     "midnight_coder": {
       "name_key": "ach_midnight_coder_name",
       "desc_key": "ach_midnight_coder_desc",
-      "xp_reward": 100
+      "xp_reward": 100,
+      "rarity": "uncommon"
+    },
+    "dawn_coder": {
+      "name_key": "ach_dawn_coder_name",
+      "desc_key": "ach_dawn_coder_desc",
+      "xp_reward": 100,
+      "rarity": "uncommon"
+    },
+    "weekend_warrior": {
+      "name_key": "ach_weekend_warrior_name",
+      "desc_key": "ach_weekend_warrior_desc",
+      "xp_reward": 140,
+      "rarity": "rare"
+    },
+    "friday_ship": {
+      "name_key": "ach_friday_ship_name",
+      "desc_key": "ach_friday_ship_desc",
+      "xp_reward": 120,
+      "rarity": "uncommon"
     },
     "firefighter": {
       "name_key": "ach_firefighter_name",
       "desc_key": "ach_firefighter_desc",
-      "xp_reward": 180
+      "xp_reward": 180,
+      "rarity": "rare"
     },
     "storyteller": {
       "name_key": "ach_storyteller_name",
       "desc_key": "ach_storyteller_desc",
-      "xp_reward": 80
+      "xp_reward": 80,
+      "rarity": "common"
+    },
+    "message_master": {
+      "name_key": "ach_message_master_name",
+      "desc_key": "ach_message_master_desc",
+      "xp_reward": 160,
+      "rarity": "rare"
     }
   }
 }

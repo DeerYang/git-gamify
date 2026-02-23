@@ -70,11 +70,20 @@ def validate_definitions() -> None:
                 )
 
     rewards = load_rewards()
-    for reward_type in ("quotes", "jokes"):
+    required_reward_types = ("quotes", "jokes")
+    optional_reward_types = ("tips", "challenges")
+
+    for reward_type in required_reward_types:
         if reward_type not in rewards or not isinstance(rewards[reward_type], dict):
             errors.append(f"Rewards missing '{reward_type}' section.")
             continue
 
+    for reward_type in list(required_reward_types) + list(optional_reward_types):
+        if reward_type not in rewards:
+            continue
+        if not isinstance(rewards[reward_type], dict):
+            errors.append(f"Rewards '{reward_type}' must be a locale dictionary.")
+            continue
         for locale in REQUIRED_LOCALES:
             values = rewards[reward_type].get(locale)
             if not isinstance(values, list) or not values:
