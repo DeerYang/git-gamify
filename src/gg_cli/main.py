@@ -13,7 +13,7 @@ from rich.progress_bar import ProgressBar
 from rich.text import Text
 from rich.console import Group
 from gg_cli.core import (
-    is_in_git_repo, load_user_data, save_user_data,
+    load_user_data, save_user_data,
     get_current_git_email, get_profile_filename, get_default_user_data
 )
 from gg_cli.gamify import process_gamify_logic, get_level_info, get_total_xp_for_level
@@ -147,7 +147,7 @@ def manage_profile(
     unlocked_achievements = user_data.get("achievements_unlocked", {})
     if unlocked_achievements:
         from gg_cli.achievements import ACHIEVEMENTS_DEF as achievements_def
-        display_items = [f"🏆 {translator.t(achievements_def.get(ach_id, {}).get('name_key', ach_id))}" for ach_id in unlocked_achievements]
+        display_items = [f"* {translator.t(achievements_def.get(ach_id, {}).get('name_key', ach_id))}" for ach_id in unlocked_achievements]
         console.print(Panel("\n".join(display_items), title=translator.t("achievements_unlocked_title"), border_style="yellow", expand=False))
 
 
@@ -219,3 +219,4 @@ def cli_entry():
 
 if __name__ == "__main__":
     cli_entry()
+

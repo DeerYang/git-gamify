@@ -20,28 +20,27 @@ def test_cli_help_command():
     assert "config" in result.stdout
 
 
-def test_cli_profile_needs_git_repo(monkeypatch):
+def test_cli_profile_needs_git_email(monkeypatch):
     """
-    Tests that running `gg profile` outside a Git repository exits with an error.
+    Tests that running `gg profile` without a configured Git email exits with an error.
     """
-    # Arrange: Use monkeypatch to simulate being outside a Git repository.
-    # We patch the function at the point of use to ensure the patch takes effect.
-    monkeypatch.setattr('gg_cli.main.is_in_git_repo', lambda: False)
+    # Arrange: Simulate missing Git identity.
+    monkeypatch.setattr('gg_cli.main.get_current_git_email', lambda: None)
 
     # Act: Invoke the 'profile' command.
     result = runner.invoke(app, ["profile"])
 
     # Assert: The command should fail with a non-zero exit code and show an error message.
     assert result.exit_code != 0
-    assert "must be run inside a Git repository" in result.stdout
+    assert "Cannot find Git user email" in result.stdout
 
 
-def test_cli_help_works_outside_git_repo(monkeypatch):
+def test_cli_help_works_without_git_email(monkeypatch):
     """
-    Tests that the `gg help` command is accessible even when outside a Git repository.
+    Tests that the `gg help` command is accessible even without Git identity.
     """
-    # Arrange: Simulate being outside a Git repository.
-    monkeypatch.setattr('gg_cli.main.is_in_git_repo', lambda: False)
+    # Arrange: Simulate missing Git identity.
+    monkeypatch.setattr('gg_cli.main.get_current_git_email', lambda: None)
 
     # Act: Invoke the 'help' command.
     result = runner.invoke(app, ["help"])

@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "git-gamify"
 version = "1.0.3"
 authors = [
-    { name = "DeerYang", email = "yhddeer@gamail.com" },
+    { name = "DeerYang", email = "yhddeer@gmail.com" },
 ]
 description = "A CLI tool that adds a fun gamification layer to your daily Git usage."
 readme = "README.md"
@@ -28,4 +28,4 @@ gg = "gg_cli.main:cli_entry"
 package-dir = {"" = "src"}
 
 [tool.setuptools.package-data]
-"*" = ["**/*.json"]
+gg_cli = ["definitions/*.json", "locales/*.json"]

@@ -56,7 +56,7 @@
       "name_key": "ach_commit_5000_name",
       "desc_key": "ach_commit_5000_desc",
       "xp_reward": 2000
-    }
+    },
     "commit_10000": {
       "name_key": "ach_commit_10000_name",
       "desc_key": "ach_commit_10000_desc",

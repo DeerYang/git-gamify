@@ -4,7 +4,6 @@
 import json
 import subprocess
 import hashlib
-from datetime import date
 from gg_cli.utils import DATA_DIR
 
 
