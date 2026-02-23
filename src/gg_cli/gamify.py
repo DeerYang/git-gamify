@@ -24,25 +24,31 @@ from gg_cli.utils import console
 
 # Each tuple: (level_cap, xp_per_level_in_tier, title_translation_key)
 LEVEL_TIERS = [
-    (10, 100, "level_title_novice"),
-    (20, 250, "level_title_apprentice"),
-    (30, 500, "level_title_journeyman"),
-    (40, 1000, "level_title_adept"),
-    (50, 2500, "level_title_master"),
-    (60, 5000, "level_title_expert"),
-    (70, 7500, "level_title_genius"),
-    (80, 10000, "level_title_legendary"),
-    (90, 15000, "level_title_marvelous"),
-    (100, 25000, "level_title_champion"),
+    (10, 220, "level_title_novice"),
+    (20, 320, "level_title_apprentice"),
+    (30, 460, "level_title_journeyman"),
+    (40, 650, "level_title_adept"),
+    (50, 900, "level_title_master"),
+    (60, 1200, "level_title_expert"),
+    (70, 1600, "level_title_genius"),
+    (80, 2100, "level_title_legendary"),
+    (90, 2700, "level_title_marvelous"),
+    (100, 3500, "level_title_champion"),
 ]
 
 DEFAULT_XP_RULES = {
-    "commit_base": 10,
-    "commit_combo_cap": 15,
-    "commit_change_bonus_divisor": 20,
-    "commit_change_bonus_cap": 20,
-    "push_base": 25,
-    "push_daily_bonus": 50,
+    "commit_base": 8,
+    "commit_full_reward_count": 6,
+    "commit_half_reward_count": 12,
+    "commit_change_tier1": 20,
+    "commit_change_tier2": 80,
+    "commit_change_tier3": 200,
+    "commit_change_bonus_tier1": 2,
+    "commit_change_bonus_tier2": 4,
+    "commit_change_bonus_tier3": 6,
+    "push_base": 4,
+    "push_first_of_day_bonus": 8,
+    "push_daily_xp_cap": 12,
 }
 
 _REWARDS_DEF = load_rewards()
@@ -113,8 +119,10 @@ def _process_commit_event(
     xp_rules: dict[str, int],
 ) -> int:
     stats = user_data["stats"]
+    _reset_daily_trackers_if_needed(stats, event.today)
     stats["total_commits"] += 1
     last_commit_date_str = stats.get("last_commit_date", "1970-01-01")
+    is_new_commit_day = last_commit_date_str != event.today.isoformat()
 
     if last_commit_date_str != "1970-01-01":
         last_commit_date = date.fromisoformat(last_commit_date_str)
@@ -129,21 +137,26 @@ def _process_commit_event(
     if last_commit_date_str != event.today.isoformat():
         stats["last_commit_date"] = event.today.isoformat()
 
-    xp_to_add = xp_rules["commit_base"]
-    xp_to_add += min(stats["consecutive_commit_days"], xp_rules["commit_combo_cap"])
+    stats["daily_commit_count"] += 1
+    commit_count_today = stats["daily_commit_count"]
+    reward_multiplier = _get_commit_reward_multiplier(commit_count_today, xp_rules)
+    xp_to_add = 0
 
     try:
         diff_stats = git_service.get_shortstat_last_commit()
         changes = sum(int(token) for token in diff_stats.split() if token.isdigit())
-        change_xp = int(changes / xp_rules["commit_change_bonus_divisor"])
-        xp_to_add += min(change_xp, xp_rules["commit_change_bonus_cap"])
+        change_xp = _get_change_bonus(changes, xp_rules)
 
         deletions_match = re.search(r"(\d+)\s+deletions", diff_stats)
         event.context["deletions"] = int(deletions_match.group(1)) if deletions_match else 0
         event.context["commit_message"] = git_service.get_last_commit_message()
     except Exception:
         # First commit or detached states can fail diff retrieval; keep flow resilient.
-        pass
+        change_xp = 0
+
+    streak_bonus = _get_streak_bonus(stats["consecutive_commit_days"]) if is_new_commit_day else 0
+    raw_xp = xp_rules["commit_base"] + change_xp + streak_bonus
+    xp_to_add += int(raw_xp * reward_multiplier)
 
     return xp_to_add
 
@@ -152,15 +165,58 @@ def _process_push_event(
     user_data: dict[str, Any], event: GamifyEvent, xp_rules: dict[str, int]
 ) -> int:
     stats = user_data["stats"]
+    _reset_daily_trackers_if_needed(stats, event.today)
     stats["total_pushes"] += 1
-    last_push_date = date.fromisoformat(stats["last_push_date"])
+    is_first_push_today = stats["last_push_date"] != event.today.isoformat()
 
-    xp_to_add = xp_rules["push_base"]
-    if event.today != last_push_date:
-        xp_to_add += xp_rules["push_daily_bonus"]
+    raw_xp = xp_rules["push_base"]
+    if is_first_push_today:
+        raw_xp += xp_rules["push_first_of_day_bonus"]
         stats["last_push_date"] = event.today.isoformat()
 
-    return xp_to_add
+    remaining_xp_quota = max(0, xp_rules["push_daily_xp_cap"] - stats["daily_push_xp_earned"])
+    earned_xp = min(raw_xp, remaining_xp_quota)
+    stats["daily_push_xp_earned"] += earned_xp
+    return earned_xp
+
+
+def _reset_daily_trackers_if_needed(stats: dict[str, Any], today: date) -> None:
+    today_str = today.isoformat()
+    if stats.get("daily_xp_date") == today_str:
+        return
+    stats["daily_xp_date"] = today_str
+    stats["daily_commit_count"] = 0
+    stats["daily_push_xp_earned"] = 0
+
+
+def _get_commit_reward_multiplier(commit_count_today: int, xp_rules: dict[str, int]) -> float:
+    if commit_count_today <= xp_rules["commit_full_reward_count"]:
+        return 1.0
+    if commit_count_today <= xp_rules["commit_half_reward_count"]:
+        return 0.5
+    return 0.0
+
+
+def _get_streak_bonus(consecutive_days: int) -> int:
+    if consecutive_days >= 31:
+        return 5
+    if consecutive_days >= 15:
+        return 4
+    if consecutive_days >= 8:
+        return 3
+    if consecutive_days >= 4:
+        return 2
+    return 1
+
+
+def _get_change_bonus(changes: int, xp_rules: dict[str, int]) -> int:
+    if changes >= xp_rules["commit_change_tier3"]:
+        return xp_rules["commit_change_bonus_tier3"]
+    if changes >= xp_rules["commit_change_tier2"]:
+        return xp_rules["commit_change_bonus_tier2"]
+    if changes >= xp_rules["commit_change_tier1"]:
+        return xp_rules["commit_change_bonus_tier1"]
+    return 0
 
 
 def _apply_level_progression(

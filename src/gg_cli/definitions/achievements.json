@@ -3,64 +3,64 @@
     "first_commit": {
       "name_key": "ach_first_commit_name",
       "desc_key": "ach_first_commit_desc",
-      "xp_reward": 50
+      "xp_reward": 30
     },
     "first_push": {
       "name_key": "ach_first_push_name",
       "desc_key": "ach_first_push_desc",
-      "xp_reward": 75
+      "xp_reward": 30
     }
   },
   "milestone": {
     "commit_10": {
       "name_key": "ach_commit_10_name",
       "desc_key": "ach_commit_10_desc",
-      "xp_reward": 100
+      "xp_reward": 80
     },
     "commit_100": {
       "name_key": "ach_commit_100_name",
       "desc_key": "ach_commit_100_desc",
-      "xp_reward": 300
+      "xp_reward": 180
     },
     "push_10": {
       "name_key": "ach_push_10_name",
       "desc_key": "ach_push_10_desc",
-      "xp_reward": 100
+      "xp_reward": 80
     },
     "push_50": {
       "name_key": "ach_push_50_name",
       "desc_key": "ach_push_50_desc",
-      "xp_reward": 350
+      "xp_reward": 220
     },
     "push_100": {
       "name_key": "ach_push_100_name",
       "desc_key": "ach_push_100_desc",
-      "xp_reward": 500
+      "xp_reward": 400
     },
     "push_500": {
       "name_key": "ach_push_500_name",
       "desc_key": "ach_push_500_desc",
-      "xp_reward": 2000
+      "xp_reward": 1000
     },
     "push_1000": {
       "name_key": "ach_push_1000_name",
       "desc_key": "ach_push_1000_desc",
-      "xp_reward": 3000
+      "xp_reward": 2000
     },
     "commit_1000": {
       "name_key": "ach_commit_1000_name",
       "desc_key": "ach_commit_1000_desc",
-      "xp_reward": 1000
+      "xp_reward": 320
     },
     "commit_5000": {
       "name_key": "ach_commit_5000_name",
       "desc_key": "ach_commit_5000_desc",
-      "xp_reward": 2000
+      "xp_reward": 700
     },
     "commit_10000": {
       "name_key": "ach_commit_10000_name",
       "desc_key": "ach_commit_10000_desc",
-      "xp_reward": 2500
+      "xp_reward": 1800
     }
   },
   "consistency": {
@@ -72,44 +72,44 @@
     "combo_7": {
       "name_key": "ach_combo_7_name",
       "desc_key": "ach_combo_7_desc",
-      "xp_reward": 300
+      "xp_reward": 260
     },
     "combo_30": {
       "name_key": "ach_combo_30_name",
       "desc_key": "ach_combo_30_desc",
-      "xp_reward": 1200
+      "xp_reward": 900
     },
     "combo_90": {
       "name_key": "ach_combo_90_name",
       "desc_key": "ach_combo_90_desc",
-      "xp_reward": 2000
+      "xp_reward": 2200
     },
     "combo_180": {
       "name_key": "ach_combo_180_name",
       "desc_key": "ach_combo_180_desc",
-      "xp_reward": 3000
+      "xp_reward": 4200
     },
     "combo_365": {
       "name_key": "ach_combo_365_name",
       "desc_key": "ach_combo_365_desc",
-      "xp_reward": 5000
+      "xp_reward": 9000
     }
   },
   "special": {
     "midnight_coder": {
       "name_key": "ach_midnight_coder_name",
       "desc_key": "ach_midnight_coder_desc",
-      "xp_reward": 150
+      "xp_reward": 100
     },
     "firefighter": {
       "name_key": "ach_firefighter_name",
       "desc_key": "ach_firefighter_desc",
-      "xp_reward": 200
+      "xp_reward": 180
     },
     "storyteller": {
       "name_key": "ach_storyteller_name",
       "desc_key": "ach_storyteller_desc",
-      "xp_reward": 100
+      "xp_reward": 80
     }
   }
 }

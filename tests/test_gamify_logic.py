@@ -16,12 +16,12 @@ from gg_cli.gamify import (
     "xp, expected_level",
     [
         (0, 1),
-        (99, 1),
-        (100, 2),
-        (999, 10),
-        (1000, 11),
-        (3499, 20),
-        (3500, 21),
+        (219, 1),
+        (220, 2),
+        (2199, 10),
+        (2200, 11),
+        (5399, 20),
+        (5400, 21),
     ],
 )
 def test_get_level_from_xp_scenarios(xp, expected_level):
@@ -32,11 +32,11 @@ def test_get_level_from_xp_scenarios(xp, expected_level):
     "target_level, expected_total_xp",
     [
         (1, 0),
-        (2, 100),
-        (3, 200),
-        (11, 1000),
-        (12, 1250),
-        (21, 3500),
+        (2, 220),
+        (3, 440),
+        (11, 2200),
+        (12, 2520),
+        (21, 5400),
     ],
 )
 def test_get_total_xp_for_level_scenarios(target_level, expected_total_xp):
@@ -45,11 +45,11 @@ def test_get_total_xp_for_level_scenarios(target_level, expected_total_xp):
 
 def test_get_level_info_boundaries():
     _, xp_per_level_10, title_key_10 = get_level_info(10)
-    assert xp_per_level_10 == 100
+    assert xp_per_level_10 == 220
     assert title_key_10 == "level_title_novice"
 
     _, xp_per_level_11, title_key_11 = get_level_info(11)
-    assert xp_per_level_11 == 250
+    assert xp_per_level_11 == 320
     assert title_key_11 == "level_title_apprentice"
 
 

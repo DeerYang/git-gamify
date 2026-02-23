@@ -57,27 +57,57 @@ def _check_storyteller(
 
 Checker = Callable[..., dict[str, str] | None]
 
+COMMIT_THRESHOLDS = {
+    "commit_10": 10,
+    "commit_100": 50,
+    "commit_1000": 100,
+    "commit_5000": 300,
+    "commit_10000": 1000,
+}
+
+PUSH_THRESHOLDS = {
+    "push_10": 10,
+    "push_50": 50,
+    "push_100": 100,
+    "push_500": 300,
+    "push_1000": 800,
+}
+
 ACHIEVEMENT_CHECKERS: dict[str, Checker] = {
     "first_commit": lambda u, **kwargs: _check_simple_stat(
         u, "total_commits", 1, "first_commit"
     ),
-    "commit_10": lambda u, **kwargs: _check_simple_stat(u, "total_commits", 10, "commit_10"),
-    "commit_100": lambda u, **kwargs: _check_simple_stat(u, "total_commits", 100, "commit_100"),
+    "commit_10": lambda u, **kwargs: _check_simple_stat(
+        u, "total_commits", COMMIT_THRESHOLDS["commit_10"], "commit_10"
+    ),
+    "commit_100": lambda u, **kwargs: _check_simple_stat(
+        u, "total_commits", COMMIT_THRESHOLDS["commit_100"], "commit_100"
+    ),
     "commit_1000": lambda u, **kwargs: _check_simple_stat(
-        u, "total_commits", 1000, "commit_1000"
+        u, "total_commits", COMMIT_THRESHOLDS["commit_1000"], "commit_1000"
     ),
     "commit_5000": lambda u, **kwargs: _check_simple_stat(
-        u, "total_commits", 5000, "commit_5000"
+        u, "total_commits", COMMIT_THRESHOLDS["commit_5000"], "commit_5000"
     ),
     "commit_10000": lambda u, **kwargs: _check_simple_stat(
-        u, "total_commits", 10000, "commit_10000"
+        u, "total_commits", COMMIT_THRESHOLDS["commit_10000"], "commit_10000"
     ),
     "first_push": lambda u, **kwargs: _check_simple_stat(u, "total_pushes", 1, "first_push"),
-    "push_10": lambda u, **kwargs: _check_simple_stat(u, "total_pushes", 10, "push_10"),
-    "push_50": lambda u, **kwargs: _check_simple_stat(u, "total_pushes", 50, "push_50"),
-    "push_100": lambda u, **kwargs: _check_simple_stat(u, "total_pushes", 100, "push_100"),
-    "push_500": lambda u, **kwargs: _check_simple_stat(u, "total_pushes", 500, "push_500"),
-    "push_1000": lambda u, **kwargs: _check_simple_stat(u, "total_pushes", 1000, "push_1000"),
+    "push_10": lambda u, **kwargs: _check_simple_stat(
+        u, "total_pushes", PUSH_THRESHOLDS["push_10"], "push_10"
+    ),
+    "push_50": lambda u, **kwargs: _check_simple_stat(
+        u, "total_pushes", PUSH_THRESHOLDS["push_50"], "push_50"
+    ),
+    "push_100": lambda u, **kwargs: _check_simple_stat(
+        u, "total_pushes", PUSH_THRESHOLDS["push_100"], "push_100"
+    ),
+    "push_500": lambda u, **kwargs: _check_simple_stat(
+        u, "total_pushes", PUSH_THRESHOLDS["push_500"], "push_500"
+    ),
+    "push_1000": lambda u, **kwargs: _check_simple_stat(
+        u, "total_pushes", PUSH_THRESHOLDS["push_1000"], "push_1000"
+    ),
     "combo_3": lambda u, **kwargs: _check_simple_stat(
         u, "consecutive_commit_days", 3, "combo_3"
     ),

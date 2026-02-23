@@ -39,6 +39,7 @@ def test_process_commit_event_streak_increments_and_resets(user_data_factory, tr
 
 def test_process_push_event_applies_daily_bonus_once(user_data_factory, translator):
     data = user_data_factory()
+    data["achievements_unlocked"]["first_push"] = "2026-01-01"
     today = date(2026, 2, 2)
 
     first_push = GamifyEvent(command="push", args=["push"], today=today)
@@ -47,9 +48,24 @@ def test_process_push_event_applies_daily_bonus_once(user_data_factory, translat
     xp_first = process_event(data, first_push, translator=translator)
     xp_second = process_event(data, second_push, translator=translator)
 
-    assert xp_first >= 75
-    assert xp_second >= 25
+    assert xp_first == 12
+    assert xp_second == 0
     assert xp_first > xp_second
+
+
+def test_process_commit_event_applies_daily_decay(user_data_factory, translator, git_service):
+    data = user_data_factory()
+    data["achievements_unlocked"]["first_commit"] = "2026-01-01"
+    today = date(2026, 2, 2)
+
+    xp_values = []
+    for _ in range(13):
+        event = GamifyEvent(command="commit", args=["commit"], today=today)
+        xp_values.append(process_event(data, event, translator=translator, git_service=git_service))
+
+    assert xp_values[0] > 0
+    assert xp_values[6] < xp_values[0]  # 7th commit gets reduced rewards.
+    assert xp_values[-1] == 0  # After daily cap, no XP is awarded.
 
 
 def test_process_event_tolerates_commit_diff_failures(user_data_factory, translator, monkeypatch):

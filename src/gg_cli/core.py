@@ -59,6 +59,9 @@ def get_default_user_data(email: str | None = None) -> dict[str, Any]:
             "last_commit_date": "1970-01-01",
             "last_push_date": "1970-01-01",
             "consecutive_commit_days": 0,
+            "daily_xp_date": "1970-01-01",
+            "daily_commit_count": 0,
+            "daily_push_xp_earned": 0,
         },
     }
 
