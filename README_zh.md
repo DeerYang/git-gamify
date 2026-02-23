@@ -5,57 +5,81 @@
 <br>
 
 <div align="center">
-  <h1 align="center">🎮 Git-Gamify</h1>
+  <h1 align="center">Git-Gamify</h1>
   <p align="center">
-    将你的命令行 Git 工作流变成一个有趣的 RPG 游戏！
+    把你每天的 Git 工作流变成一个轻量 RPG 循环。
     <br />
-    升级、解锁成就，让每一次提交都充满回报。
+    通过真实 Git 操作获得经验值、升级并解锁成就。
   </p>
 </div>
 
 <p align="center">
   <img src="https://img.shields.io/pypi/v/git-gamify.svg?color=blue" alt="PyPI 版本">
   <img src="https://img.shields.io/pypi/pyversions/git-gamify.svg" alt="Python 版本">
-  <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="许可协议">
+  <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="许可证">
 </p>
 
 ---
 
-<img width="1110" height="622" alt="Image" src="https://github.com/user-attachments/assets/00cd62d4-2984-43ca-87c1-e8683c419b5c" />
+<img width="1110" height="622" alt="Git-Gamify 演示" src="https://github.com/user-attachments/assets/00cd62d4-2984-43ca-87c1-e8683c419b5c" />
 
-## ✨ Git-Gamify 是什么？
+## Git-Gamify 是什么
 
-Git-Gamify 是一个命令行工具，它为你日常的 Git 操作添加了一个有趣的“游戏化”层。它会静默地包装你的 `git` 命令（如 `commit`, `push`），并用经验值（XP）、等级和成就来奖励你，将单调的任务变成一个引人入胜的游戏。
+Git-Gamify 会包装你平时的 `git` 使用（如 `commit`、`push`），并叠加一层游戏化反馈：
 
-## 🚀 主要特性
+- 经验值与等级成长
+- 成就解锁
+- 升级时随机奖励提示
+- 个人资料与统计展示
 
-- **等级系统**: 通过 `commit` 和 `push` 操作获得经验值，见证你的等级成长。
-- **动态经验**: 根据你的连续提交天数和代码改动量获得额外奖励经验。
-- **成就引擎**: 解锁超过12个成就，涵盖里程碑、连续性和特殊操作等。
-- **内容丰富的个人档案**: 使用精美格式化的个人档案，查看你的进度、统计和已解锁的成就。
-- **多语言**: 支持中文和英文。
-- **轻量且快速**: 在后台静默运行，不会拖慢你的工作流。
+核心目标是保留你原有 Git 习惯，不改操作心智，同时提供即时反馈和长期动力。
 
-## 📦 安装
+## 功能特性
 
-Git-Gamify 需要你的系统已安装 Python 3.8+ 和 Git。
+- 面向 `commit` 和 `push` 的 XP 成长体系
+- 每日衰减/上限机制，避免刷分
+- 连击与行为驱动成就系统
+- 基于 Git 身份（`user.email`）的本地独立档案
+- 多语言支持（`en`、`zh`）
+- Rich 终端 UI 展示
 
-你可以直接通过 PyPI 使用 `pip` 来安装：
+## 安装
+
+环境要求：
+
+- Python 3.8+
+- Git
+
+通过 PyPI 安装：
 
 ```bash
 pip install git-gamify
 ```
 
-## ⚙️ 配置
+或在本仓库可编辑安装：
 
-为了让 Git-Gamify 能够追踪你的命令，你需要在你的 Shell 配置文件中设置一个函数。
+```bash
+pip install -e .
+```
 
-### 步骤一：必需的别名设置 (关键步骤!)
+## 快速开始
 
-这是唯一必需的配置步骤。请为你的 Shell 选择对应的配置。
+1. 在 Shell 中配置 `git` 包装函数，让命令经过 Git-Gamify。
+2. 重启终端。
+3. 像平时一样使用 Git（`git commit`、`git push`）。
+4. 用 `gg profile` 查看成长进度。
 
-**对于 PowerShell:**
-使用 `notepad $PROFILE` 命令打开你的配置文件，并添加以下这行：
+## Shell 配置
+
+### PowerShell（必需）
+
+编辑 PowerShell 配置：
+
+```powershell
+notepad $PROFILE
+```
+
+添加：
 
 ```powershell
 function git {
@@ -63,8 +87,11 @@ function git {
 }
 ```
 
-**对于 Bash / Zsh:**
-打开你的 `~/.bashrc` 或 `~/.zshrc` 文件，并添加以下函数：
+保存后重启 PowerShell。
+
+### Bash / Zsh（必需）
+
+在 `~/.bashrc` 或 `~/.zshrc` 添加：
 
 ```bash
 function git() {
@@ -72,64 +99,128 @@ function git() {
 }
 ```
 
-> **⚠️ 重要提示:** 粘贴完函数后，请务必按下 **回车键** 以确保在文件末尾添加一个新行。这可以防止以后添加其他脚本时可能出现的问题。
+然后执行 `source ~/.bashrc` / `source ~/.zshrc` 或重启终端。
 
-保存文件后，请 **重启你的终端** 以使改动生效。
+## 命令补全
 
-### 步骤二：可选 - 开启自动补全
+### `gg` 命令补全
 
-为了获得更流畅的命令行体验，我们强烈推荐你安装自动补全脚本。在完成步骤一并重启终端后，运行适合你的命令：
+首次执行：
 
-**对于 PowerShell:** `gg --install-completion powershell`
-**对于 Bash:** `gg --install-completion bash`
-**对于 Zsh:** `gg --install-completion zsh`
+```powershell
+gg --install-completion powershell
+```
 
-请遵循屏幕上的指示完成安装，然后 **最后再重启一次你的终端**。
+（`bash` 和 `zsh` 也支持 Typer 的补全安装。）
 
-## 🎮 命令指南
+### PowerShell 下同时保留 `gg` 与包装后 `git` 的补全
 
-一旦配置完成，你的 `git` 命令就会自动为你增加经验值了！你也可以使用 Git-Gamify 的内部命令：
+当你把 `git` 包装成 PowerShell 函数后，原生 `git` 补全可能失效。原因是补全原本绑定在 `git.exe`，而不是你的函数。
+
+可使用下面的 `Microsoft.PowerShell_profile.ps1` 配置：
+
+```powershell
+Import-Module PSReadLine
+Import-Module posh-git
+$GitPromptSettings.EnablePromptStatus = $false
+
+function git {
+    gg git @args
+}
+
+Set-PSReadLineKeyHandler -Chord Tab -Function MenuComplete
+
+# gg 补全
+$scriptblock = {
+    param($wordToComplete, $commandAst, $cursorPosition)
+    $Env:_GG_COMPLETE = "complete_powershell"
+    $Env:_TYPER_COMPLETE_ARGS = $commandAst.ToString()
+    $Env:_TYPER_COMPLETE_WORD_TO_COMPLETE = $wordToComplete
+    gg | ForEach-Object {
+        $commandArray = $_ -Split ":::"
+        $command = $commandArray[0]
+        $helpString = $commandArray[1]
+        [System.Management.Automation.CompletionResult]::new(
+            $command, $command, "ParameterValue", $helpString
+        )
+    }
+    $Env:_GG_COMPLETE = ""
+    $Env:_TYPER_COMPLETE_ARGS = ""
+    $Env:_TYPER_COMPLETE_WORD_TO_COMPLETE = ""
+}
+Register-ArgumentCompleter -Native -CommandName gg -ScriptBlock $scriptblock
+
+# 给包装后的 git 函数桥接 posh-git 补全
+Register-ArgumentCompleter -CommandName git -ScriptBlock {
+    param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
+    $line = $commandAst.ToString()
+    $lastWord = $wordToComplete
+    GitTabExpansion $line $lastWord | ForEach-Object {
+        [System.Management.Automation.CompletionResult]::new($_, $_, "ParameterValue", $_)
+    }
+}
+```
+
+说明：
+
+- `GitTabExpansion` 由 `posh-git` 提供，所以必须 `Import-Module posh-git`。
+- 如果启动时提示找不到 `gg`，说明当前 Python 环境里没有安装或 `PATH` 未包含可执行路径。
+- 提示符中的 `main`/分支信息来自 `posh-git`，不是 Git-Gamify 自身逻辑。
+
+## 命令说明
 
 ### `gg profile`
-显示你完整的用户档案，包括等级、经验值进度和已解锁的成就。
+
+查看用户档案、等级进度和已解锁成就：
 
 ```bash
 gg profile
 ```
-**选项:**
-- `--stats` 或 `-s`: 仅显示详细的统计数据（总提交数、推送数等）。
-  ```bash
-  gg profile --stats
-  ```
-- `--reset`: 重置当前用户的所有进度（需要确认）。
-  ```bash
-  gg profile --reset
-  ```
+
+可选项：
+
+- `gg profile --stats` 或 `gg profile -s`
+- `gg profile --reset`
 
 ### `gg config`
-获取或设置配置值。
 
-**用法:**
-- **设置一个值:**
-  ```bash
-  # 设置语言为中文
-  gg config --set language=zh
-  
-  # 设置语言回英文
-  gg config --set language=en
-  ```
-- **获取一个值:**
-  ```bash
-  gg config --get language
-  ```
+读取或更新配置：
+
+```bash
+gg config --get language
+gg config --set language=zh
+gg config --set language=en
+```
 
 ### `gg help`
-显示包含内部命令列表的帮助信息。
+
+查看内置命令帮助：
 
 ```bash
 gg help
 ```
 
-## 📄 许可协议
+## 数据存储
 
-本项目基于 MIT 许可协议。
+用户数据默认保存在本地：
+
+- Windows：`%USERPROFILE%\.git-gamify`
+- Unix-like：`~/.git-gamify`
+
+每个档案以 Git `user.email` 的哈希值区分。
+
+## 开发与测试
+
+推荐使用虚拟环境：
+
+```powershell
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -e .
+pip install pytest
+pytest -q -p no:cacheprovider
+```
+
+## 许可证
+
+MIT License。

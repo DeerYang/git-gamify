@@ -1,4 +1,3 @@
-
 <div align="right">
   <b><a href="README.md">English</a></b> | <a href="README_zh.md">中文</a>
 </div>
@@ -6,11 +5,11 @@
 <br>
 
 <div align="center">
-  <h1 align="center">🎮 Git-Gamify</h1>
+  <h1 align="center">Git-Gamify</h1>
   <p align="center">
-    Turn your command-line Git workflow into a fun RPG!
+    Turn your daily Git workflow into a lightweight RPG loop.
     <br />
-    Level up, unlock achievements, and make every commit rewarding.
+    Earn XP, level up, and unlock achievements from real Git usage.
   </p>
 </div>
 
@@ -22,41 +21,65 @@
 
 ---
 
-<img width="1110" height="622" alt="Image" src="https://github.com/user-attachments/assets/00cd62d4-2984-43ca-87c1-e8683c419b5c" />
+<img width="1110" height="622" alt="Git-Gamify demo" src="https://github.com/user-attachments/assets/00cd62d4-2984-43ca-87c1-e8683c419b5c" />
 
-## ✨ What is Git-Gamify?
+## What Is Git-Gamify
 
-Git-Gamify is a command-line tool that adds a fun gamification layer to your daily Git usage. It silently wraps your `git` commands (`commit`, `push`, etc.) and rewards you with Experience Points (XP), levels, and achievements, turning tedious tasks into an engaging game.
+Git-Gamify wraps your normal `git` usage (`commit`, `push`) and adds a game layer:
 
-## 🚀 Key Features
+- XP and level progression
+- achievement unlocks
+- reward messages on level up
+- profile/stat display commands
 
-- **Leveling System**: Gain XP for `commit` and `push` actions and watch your level grow.
-- **Dynamic XP**: Earn bonus XP for commit streaks and the volume of your code changes.
-- **Achievement Engine**: Unlock over a dozen achievements for milestones, consistency, and special actions.
-- **Rich Profile**: View your progress, stats, and unlocked achievements with a beautifully formatted profile.
-- **Multi-language**: Supports both English and Chinese.
-- **Lightweight & Fast**: Runs silently in the background without slowing you down.
+The core goal is to keep your existing Git habits intact while adding immediate feedback and motivation.
 
-## 📦 Installation
+## Features
 
-Git-Gamify requires Python 3.8+ and Git to be installed on your system.
+- Progressive XP system for commits and pushes
+- Daily decay/cap mechanics to avoid farming
+- Streak and behavior-based achievements
+- Local profile persistence per Git identity (`user.email`)
+- Multi-language support (`en`, `zh`)
+- Rich terminal UI output
 
-You can install it directly from PyPI using `pip`:
+## Installation
+
+Requirements:
+
+- Python 3.8+
+- Git
+
+Install from PyPI:
 
 ```bash
-pip install git-gamify 
+pip install git-gamify
 ```
 
-## ⚙️ Configuration
+Or install this repo in editable mode:
 
-To let Git-Gamify track your commands, you need to set up a function in your shell's configuration file.
+```bash
+pip install -e .
+```
 
-### Step 1: Required Alias Setup (Crucial!)
+## Quick Start
 
-This is the only required setup step. Choose the one for your shell.
+1. Add shell wrapper so your normal `git` command is routed through Git-Gamify.
+2. Restart terminal.
+3. Use Git as usual (`git commit`, `git push`).
+4. Check progress with `gg profile`.
 
-**For PowerShell:**
-Open your profile with `notepad $PROFILE` and add the following line:
+## Shell Setup
+
+### PowerShell (Required)
+
+Edit your profile:
+
+```powershell
+notepad $PROFILE
+```
+
+Add:
 
 ```powershell
 function git {
@@ -64,8 +87,11 @@ function git {
 }
 ```
 
-**For Bash / Zsh:**
-Open your `~/.bashrc` or `~/.zshrc` file and add the following function:
+Restart PowerShell.
+
+### Bash / Zsh (Required)
+
+Add to `~/.bashrc` or `~/.zshrc`:
 
 ```bash
 function git() {
@@ -73,64 +99,128 @@ function git() {
 }
 ```
 
-> **⚠️ Important:** After pasting the function, please ensure you press **Enter** to add a new line at the end of the file. This prevents issues if other scripts are added later.
+Reload shell (`source ~/.bashrc` / `source ~/.zshrc`) or restart terminal.
 
-After saving the file, **restart your terminal** for the changes to take effect.
+## Autocompletion
 
-### Step 2: Optional - Enable Autocompletion
+### CLI Completion for `gg`
 
-For a much smoother experience, we highly recommend installing the autocompletion script. After completing Step 1 and restarting your terminal, run the appropriate command:
+Run once:
 
-**For PowerShell:** `gg --install-completion powershell`
-**For Bash:** `gg --install-completion bash`
-**For Zsh:** `gg --install-completion zsh`
+```powershell
+gg --install-completion powershell
+```
 
-Follow any on-screen instructions, then **restart your terminal one last time**.
+(`bash` and `zsh` are also supported via Typer installer.)
 
-## 🎮 Commands Guide
+### PowerShell: Keep Both `gg` and Wrapped `git` Completion
 
-Once configured, your `git` commands will automatically grant XP! You can also use Git-Gamify's internal commands:
+When `git` is wrapped as a PowerShell function, default `git` completion can disappear because completion was attached to native `git.exe`, not your function.
+
+Use this profile setup:
+
+```powershell
+Import-Module PSReadLine
+Import-Module posh-git
+$GitPromptSettings.EnablePromptStatus = $false
+
+function git {
+    gg git @args
+}
+
+Set-PSReadLineKeyHandler -Chord Tab -Function MenuComplete
+
+# gg completion
+$scriptblock = {
+    param($wordToComplete, $commandAst, $cursorPosition)
+    $Env:_GG_COMPLETE = "complete_powershell"
+    $Env:_TYPER_COMPLETE_ARGS = $commandAst.ToString()
+    $Env:_TYPER_COMPLETE_WORD_TO_COMPLETE = $wordToComplete
+    gg | ForEach-Object {
+        $commandArray = $_ -Split ":::"
+        $command = $commandArray[0]
+        $helpString = $commandArray[1]
+        [System.Management.Automation.CompletionResult]::new(
+            $command, $command, "ParameterValue", $helpString
+        )
+    }
+    $Env:_GG_COMPLETE = ""
+    $Env:_TYPER_COMPLETE_ARGS = ""
+    $Env:_TYPER_COMPLETE_WORD_TO_COMPLETE = ""
+}
+Register-ArgumentCompleter -Native -CommandName gg -ScriptBlock $scriptblock
+
+# bridge completion for wrapped git function
+Register-ArgumentCompleter -CommandName git -ScriptBlock {
+    param($commandName, $parameterName, $wordToComplete, $commandAst, $fakeBoundParameters)
+    $line = $commandAst.ToString()
+    $lastWord = $wordToComplete
+    GitTabExpansion $line $lastWord | ForEach-Object {
+        [System.Management.Automation.CompletionResult]::new($_, $_, "ParameterValue", $_)
+    }
+}
+```
+
+Notes:
+
+- `Import-Module posh-git` is required for `GitTabExpansion`.
+- If startup throws `cannot find 'gg'`, ensure `gg` is installed in the active Python environment and available in `PATH`.
+- `main`/branch text in prompt is from `posh-git` prompt feature, not Git-Gamify runtime.
+
+## Commands
 
 ### `gg profile`
-Displays your complete user profile, including level, XP progress, and unlocked achievements.
+
+Show user profile, level progress, and unlocked achievements.
 
 ```bash
 gg profile
 ```
-**Options:**
-- `--stats` or `-s`: Display detailed statistics only (total commits, pushes, etc.).
-  ```bash
-  gg profile --stats
-  ```
-- `--reset`: Resets all progress for the current user (requires confirmation).
-  ```bash
-  gg profile --reset
-  ```
+
+Options:
+
+- `gg profile --stats` or `gg profile -s`
+- `gg profile --reset`
 
 ### `gg config`
-Gets or sets configuration values.
 
-**Usage:**
-- **Set a value:**
-  ```bash
-  # Set language to Chinese
-  gg config --set language=zh
-  
-  # Set language back to English
-  gg config --set language=en
-  ```
-- **Get a value:**
-  ```bash
-  gg config --get language
-  ```
+Read or update config values.
+
+```bash
+gg config --get language
+gg config --set language=zh
+gg config --set language=en
+```
 
 ### `gg help`
-Displays the help message with a list of internal commands.
+
+Show internal command help.
 
 ```bash
 gg help
 ```
 
-## 📄 License
+## Data Storage
 
-This project is licensed under the MIT License.
+User data is stored locally under:
+
+- Windows: `%USERPROFILE%\.git-gamify`
+- Unix-like: `~/.git-gamify`
+
+Profiles are keyed by a hash of your Git `user.email`.
+
+## Development
+
+Create and use a virtual environment:
+
+```powershell
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -e .
+pip install pytest
+pytest -q -p no:cacheprovider
+```
+
+## License
+
+MIT License.
