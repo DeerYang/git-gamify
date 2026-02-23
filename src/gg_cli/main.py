@@ -2,7 +2,6 @@
 """The main entry point for the Git-Gamify CLI. Defines all user-facing commands and handles command-line argument parsing."""
 
 import sys
-import subprocess
 import typer
 import os
 import traceback
@@ -16,7 +15,14 @@ from gg_cli.core import (
     load_user_data, save_user_data,
     get_current_git_email, get_profile_filename, get_default_user_data
 )
-from gg_cli.gamify import process_gamify_logic, get_level_info, get_total_xp_for_level
+from gg_cli.definitions_loader import DefinitionsValidationError
+from gg_cli.gamify import (
+    process_gamify_logic,
+    get_level_info,
+    get_total_xp_for_level,
+    ensure_runtime_definitions_valid,
+)
+from gg_cli.git_service import GitService
 from gg_cli.translator import Translator
 from gg_cli.utils import console, DATA_DIR
 
@@ -44,6 +50,12 @@ def main_callback(ctx: typer.Context):
     # 'help' command can run anywhere, no checks needed.
     if command == 'help':
         return
+
+    try:
+        ensure_runtime_definitions_valid()
+    except DefinitionsValidationError as exc:
+        console.print(f"[bold red]Definitions error:[/bold red] {exc}")
+        raise typer.Exit(code=1)
 
     # For commands like 'profile' and 'config', we only need a user identity.
     # The identity is derived from the git email.
@@ -183,8 +195,9 @@ def manage_config(
 
 def run_git_wrapper(git_args: list[str]) -> None:
     """Execute the real git command and trigger gamification logic on success."""
+    git_service = GitService()
     try:
-        result = subprocess.run(['git'] + git_args, capture_output=True, text=True, check=False, encoding='utf-8')
+        result = git_service.run(git_args)
         if result.stdout:
             sys.stdout.write(result.stdout)
         if result.stderr:
@@ -195,7 +208,7 @@ def run_git_wrapper(git_args: list[str]) -> None:
             command = git_args[0] if git_args else ""
             if command in ["commit", "push"]:
                 console.print("-" * 20)
-                process_gamify_logic(git_args)
+                process_gamify_logic(git_args, git_service=git_service)
     except FileNotFoundError:
         console.print("[bold red]Error: 'git' command not found. Is Git installed and in your PATH?[/bold red]")
     except Exception:
