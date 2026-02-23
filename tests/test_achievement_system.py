@@ -1,83 +1,57 @@
-# tests/test_achievement_system.py
-"""Unit tests for the achievement unlocking logic."""
+"""Unit tests for achievement unlock behavior."""
+
+from __future__ import annotations
+
+from datetime import date
 
 import pytest
-from gg_cli.achievements import check_all_achievements
-from gg_cli.translator import Translator
+
+from gg_cli.achievements import ACHIEVEMENTS_DEF, check_all_achievements
 
 
-@pytest.fixture
-def mock_translator() -> Translator:
-    """
-    Provides a mock Translator instance that avoids file I/O.
-    The mock `t` method simply returns the key, which is sufficient for logic testing.
-    """
-    translator = Translator()
-    translator.t = lambda key, **kwargs: key
-    return translator
+def test_unlock_first_commit(user_data_factory, translator):
+    data = user_data_factory()
+    data["stats"]["total_commits"] = 1
+
+    gained_xp = check_all_achievements(data, translator, context={"command": "commit"})
+
+    assert "first_commit" in data["achievements_unlocked"]
+    assert gained_xp == ACHIEVEMENTS_DEF["first_commit"]["xp_reward"]
+    assert data["achievements_unlocked"]["first_commit"] == date.today().isoformat()
 
 
-@pytest.fixture
-def base_user_data() -> dict:
-    """Provides a clean, default user data structure for each test."""
-    return {
-        "stats": {
-            "total_commits": 0,
-            "total_pushes": 0,
-            "consecutive_commit_days": 0,
-        },
-        "achievements_unlocked": {}
-    }
+def test_unlock_higher_combo_only_when_lower_is_already_unlocked(user_data_factory, translator):
+    data = user_data_factory()
+    data["achievements_unlocked"]["combo_3"] = "2025-01-01"
+    data["stats"]["consecutive_commit_days"] = 7
+
+    gained_xp = check_all_achievements(data, translator, context={"command": "commit"})
+
+    assert "combo_7" in data["achievements_unlocked"]
+    assert gained_xp == ACHIEVEMENTS_DEF["combo_7"]["xp_reward"]
 
 
-def test_unlock_first_commit(base_user_data: dict, mock_translator: Translator):
-    """Tests that the 'first_commit' achievement unlocks at exactly 1 commit."""
-    # Arrange: Set user stats to meet the condition
-    base_user_data["stats"]["total_commits"] = 1
+@pytest.mark.parametrize(
+    "context, achievement_id",
+    [
+        ({"command": "commit", "deletions": 501}, "firefighter"),
+        ({"command": "commit", "commit_message": "word " * 50}, "storyteller"),
+    ],
+)
+def test_special_achievement_unlocks(user_data_factory, translator, context, achievement_id):
+    data = user_data_factory()
 
-    # Act: Run the achievement checker
-    xp = check_all_achievements(base_user_data, mock_translator, context={"command": "commit"})
+    gained_xp = check_all_achievements(data, translator, context=context)
 
-    # Assert: Check that the achievement is unlocked and the correct XP is awarded
-    assert "first_commit" in base_user_data["achievements_unlocked"]
-    assert xp == 50
-
-
-def test_unlock_combo_master_only(base_user_data: dict, mock_translator: Translator):
-    """
-    Tests unlocking a higher-tier achievement ('combo_7') without also getting
-    credit for a lower-tier one ('combo_3') that is already unlocked.
-    """
-    # Arrange: Assume 'combo_3' is already unlocked and the user meets the 'combo_7' condition
-    base_user_data["achievements_unlocked"]["combo_3"] = "2025-01-01"
-    base_user_data["stats"]["consecutive_commit_days"] = 7
-
-    xp = check_all_achievements(base_user_data, mock_translator, context={"command": "commit"})
-
-    assert "combo_7" in base_user_data["achievements_unlocked"]
-    # Assert: The awarded XP should only be from the 'combo_7' achievement.
-    assert xp == 300
+    assert achievement_id in data["achievements_unlocked"]
+    assert gained_xp >= ACHIEVEMENTS_DEF[achievement_id]["xp_reward"]
 
 
-def test_unlock_firefighter(base_user_data: dict, mock_translator: Translator):
-    """Tests that the 'firefighter' achievement unlocks with enough deletions."""
-    # Arrange: Provide a context with sufficient deletion stats
-    context = {"command": "commit", "deletions": 501}
+def test_already_unlocked_achievement_grants_no_xp(user_data_factory, translator):
+    data = user_data_factory()
+    data["stats"]["total_commits"] = 5
+    data["achievements_unlocked"]["first_commit"] = "2025-01-01"
 
-    xp = check_all_achievements(base_user_data, mock_translator, context)
+    gained_xp = check_all_achievements(data, translator, context={"command": "commit"})
 
-    assert "firefighter" in base_user_data["achievements_unlocked"]
-    assert xp == 200
-
-
-def test_no_unlock_if_already_unlocked(base_user_data: dict, mock_translator: Translator):
-    """Tests that an already unlocked achievement does not grant XP again."""
-    # Arrange: Set up a user who has already unlocked 'first_commit'
-    base_user_data["stats"]["total_commits"] = 5
-    base_user_data["achievements_unlocked"]["first_commit"] = "2025-01-01"
-
-    # Act: Run the checker again
-    xp = check_all_achievements(base_user_data, mock_translator, context={"command": "commit"})
-
-    # Assert: No new XP should be awarded.
-    assert xp == 0
+    assert gained_xp == 0

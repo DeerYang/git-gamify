@@ -1,5 +1,8 @@
-"""Tests for user profile persistence and recovery logic."""
+"""Tests for profile persistence behavior in UserRepository."""
 
+from __future__ import annotations
+
+import json
 from pathlib import Path
 
 import pytest
@@ -15,6 +18,24 @@ def test_user_repository_round_trip(tmp_path: Path):
 
     loaded = repo.load("test@example.com")
     assert loaded["stats"]["total_commits"] == 3
+    assert loaded["config"]["user_email"] == "test@example.com"
+
+
+def test_user_repository_merges_partial_schema_from_disk(tmp_path: Path):
+    repo = UserRepository(tmp_path)
+    profile_path = repo.get_profile_path("test@example.com")
+    profile_path.write_text(
+        json.dumps(
+            {"stats": {"total_commits": 9}, "config": {"language": "zh"}},
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    loaded = repo.load("test@example.com")
+    assert loaded["stats"]["total_commits"] == 9
+    assert loaded["stats"]["total_pushes"] == 0
+    assert loaded["config"]["language"] == "zh"
     assert loaded["config"]["user_email"] == "test@example.com"
 
 
