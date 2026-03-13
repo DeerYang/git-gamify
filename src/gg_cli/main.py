@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 import os
+import platform
+import shutil
+import subprocess
 import sys
 import traceback
 
@@ -18,6 +21,7 @@ from gg_cli.core import (
     get_current_git_email,
     get_default_user_data,
     get_profile_filename,
+    is_in_git_repo,
     load_user_data,
     save_user_data,
 )
@@ -50,7 +54,7 @@ def get_translator() -> Translator:
 def main_callback(ctx: typer.Context) -> None:
     """Run lightweight preflight checks before executing CLI subcommands."""
     command = ctx.invoked_subcommand
-    if command == "help":
+    if command in {"help", "doctor"}:
         return
 
     try:
@@ -74,6 +78,7 @@ def show_help() -> None:
     table.add_column()
     table.add_row("profile", "Display user profile, stats, or reset progress.")
     table.add_row("config", "Get or set configuration values.")
+    table.add_row("doctor", "Print environment diagnostics for troubleshooting.")
     table.add_row("help", "Show this help message and exit.")
     console.print(
         Panel(
@@ -178,9 +183,70 @@ def manage_profile(
                 "\n".join(display_items),
                 title=translator.t("achievements_unlocked_title"),
                 border_style="yellow",
-                expand=False,
-            )
+            expand=False,
         )
+    )
+
+
+@app.command("doctor")
+def run_doctor() -> None:
+    """Print a concise diagnostics report for local troubleshooting."""
+    git_path = shutil.which("git")
+    try:
+        git_version = subprocess.check_output(
+            ["git", "--version"],
+            text=True,
+            stderr=subprocess.DEVNULL,
+        ).strip()
+    except Exception:
+        git_version = "unavailable"
+
+    try:
+        ensure_runtime_definitions_valid()
+        definitions_status = "ok"
+    except DefinitionsValidationError as exc:
+        definitions_status = f"invalid ({exc})"
+
+    email = get_current_git_email() or "not set"
+    shell = os.environ.get("SHELL") or os.environ.get("ComSpec") or "unknown"
+    in_repo = "yes" if is_in_git_repo() else "no"
+    data_dir_writable = "yes" if os.access(DATA_DIR, os.W_OK) else "no"
+    definitions_state = "OK" if definitions_status == "ok" else "ERROR"
+    definitions_style = "green" if definitions_status == "ok" else "red"
+
+    info_table = Table(show_header=False, box=None, pad_edge=False, expand=True)
+    info_table.add_column(style="cyan", no_wrap=True, width=18)
+    info_table.add_column()
+
+    info_table.add_row("[bold magenta]Environment[/bold magenta]", "")
+    info_table.add_row("OS", platform.platform())
+    info_table.add_row("Python", sys.version.split()[0])
+    info_table.add_row("Python executable", sys.executable)
+    info_table.add_row("Shell", shell)
+    info_table.add_row("", "")
+
+    info_table.add_row("[bold magenta]Git[/bold magenta]", "")
+    info_table.add_row("Git path", git_path or "not found")
+    info_table.add_row("Git version", git_version)
+    info_table.add_row("Git email", email)
+    info_table.add_row("In git repo", in_repo)
+    info_table.add_row("", "")
+
+    info_table.add_row("[bold magenta]Project[/bold magenta]", "")
+    info_table.add_row("Data dir", str(DATA_DIR))
+    info_table.add_row("Data dir writable", data_dir_writable)
+    info_table.add_row("Definitions", f"[{definitions_style}]{definitions_state}[/{definitions_style}]")
+    if definitions_status != "ok":
+        info_table.add_row("Definitions detail", definitions_status)
+
+    console.print(
+        Panel(
+            info_table,
+            title="[bold]Git-Gamify Doctor[/bold]",
+            border_style="bright_blue",
+            expand=False,
+        )
+    )
 
 
 @app.command("config")

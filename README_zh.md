@@ -21,7 +21,7 @@
 
 ---
 
-<img width="1110" height="622" alt="Git-Gamify 演示" src="https://github.com/user-attachments/assets/00cd62d4-2984-43ca-87c1-e8683c419b5c" />
+<img width="834" height="364" alt="Image" src="https://github.com/user-attachments/assets/871085f4-4abc-4551-911c-a836e640ce09" />
 
 ## Git-Gamify 是什么
 
@@ -190,6 +190,14 @@ gg profile
 gg config --get language
 gg config --set language=zh
 gg config --set language=en
+```
+
+### `gg doctor`
+
+输出本机诊断信息（环境、Git、项目状态），用于排错和 issue 反馈。
+
+```bash
+gg doctor
 ```
 
 ### `gg help`

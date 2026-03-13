@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import pytest
 
+from gg_cli.definitions_loader import DefinitionsValidationError
 from gg_cli.main import app
 
 pytestmark = pytest.mark.allow_console_output
@@ -15,6 +16,7 @@ def test_cli_help_command(runner):
     assert result.exit_code == 0
     assert "profile" in result.stdout
     assert "config" in result.stdout
+    assert "doctor" in result.stdout
 
 
 def test_cli_profile_requires_git_email(monkeypatch, runner):
@@ -68,3 +70,30 @@ def test_cli_config_set_invalid_format(monkeypatch, runner):
     result = runner.invoke(app, ["config", "--set", "language"])
     assert result.exit_code == 0
     assert "Invalid format" in result.stdout
+
+
+def test_cli_doctor_runs_without_git_email(monkeypatch, runner):
+    """Doctor command should run even when git identity is unavailable."""
+    monkeypatch.setattr("gg_cli.main.get_current_git_email", lambda: None)
+    monkeypatch.setattr("gg_cli.main.is_in_git_repo", lambda: False)
+
+    result = runner.invoke(app, ["doctor"])
+
+    assert result.exit_code == 0
+    assert "Git-Gamify Doctor" in result.stdout
+    assert "Git email" in result.stdout
+    assert "not set" in result.stdout
+
+
+def test_cli_doctor_reports_definition_error(monkeypatch, runner):
+    """Doctor command should report definitions failures instead of exiting early."""
+    monkeypatch.setattr(
+        "gg_cli.main.ensure_runtime_definitions_valid",
+        lambda: (_ for _ in ()).throw(DefinitionsValidationError("bad defs")),
+    )
+
+    result = runner.invoke(app, ["doctor"])
+
+    assert result.exit_code == 0
+    assert "Definitions" in result.stdout
+    assert "invalid (bad defs)" in result.stdout

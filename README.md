@@ -21,7 +21,7 @@
 
 ---
 
-<img width="1110" height="622" alt="Git-Gamify demo" src="https://github.com/user-attachments/assets/00cd62d4-2984-43ca-87c1-e8683c419b5c" />
+<img width="834" height="364" alt="Image" src="https://github.com/user-attachments/assets/871085f4-4abc-4551-911c-a836e640ce09" />
 
 ## What Is Git-Gamify
 
@@ -190,6 +190,14 @@ Read or update config values.
 gg config --get language
 gg config --set language=zh
 gg config --set language=en
+```
+
+### `gg doctor`
+
+Print local diagnostics (environment, git, and project status) for troubleshooting.
+
+```bash
+gg doctor
 ```
 
 ### `gg help`
